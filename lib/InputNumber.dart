@@ -17,8 +17,6 @@ class InputNumber extends StatefulWidget{
 class InputNumberState extends State<InputNumber>{
   final numberController = TextEditingController();
   final invitecodecontroller = TextEditingController();
-  var _code;
-   var _onEditing;
    var RedColor = Colors.red;
    var themeColor = Color.fromRGBO(19, 2, 102, 1);
   var InputNumberColor = Color.fromRGBO(19, 2, 102, 1);
@@ -32,31 +30,32 @@ class InputNumberState extends State<InputNumber>{
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     // TODO: implement build
-    return WillPopScope(child:  Scaffold(
+    return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor:  Color.fromRGBO(203, 203, 205, 1),
-        body: Stack(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/inputnumberback.png'),
-                      alignment: Alignment.topCenter,
-                      fit: BoxFit.fitWidth
-                  )
-              ),
+      backgroundColor:  Color.fromRGBO(203, 203, 205, 1),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/inputnumberback.jpg'),
+                  alignment: Alignment.topCenter,
+                    fit: BoxFit.fitWidth
+                )
             ),
-            Padding(padding: EdgeInsets.only(top: 220,left: 15,right: 15,bottom: 15),child: Card(
-              semanticContainer: true,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(35),
-              ),
-              margin: EdgeInsets.all(10),
-              elevation: 5,
-              child:Container(
-                color: Colors.white,
-                child: Column(
+          ),
+          Padding(padding: EdgeInsets.only(top: 240,left: 15,right: 15,bottom: 15),child: Card(
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(35),
+            ),
+            margin: EdgeInsets.all(10),
+            elevation: 5,
+            child:Container(
+             color: Colors.white,
+              child: SingleChildScrollView(
+                child:Column(
                   children: <Widget>[
                     Padding(padding:EdgeInsets.only(top: 30),child: Row(children: <Widget>[
                       Padding(padding: EdgeInsets.only(top: 15,right: 20),child: Text('شماره همراه ',style: TextStyle(fontFamily: 'MyFont',fontSize: 20,color: Colors.black),),)
@@ -91,9 +90,7 @@ class InputNumberState extends State<InputNumber>{
                                     textAlign: TextAlign.center,
                                     keyboardType: TextInputType.number,
                                     cursorColor: Colors.deepPurple,
-                                    inputFormatters: [WhitelistingTextInputFormatter.digitsOnly,
-                                      LengthLimitingTextInputFormatter(10),
-                                    ],
+
                                     style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: 'MyFont'),
                                     decoration: new InputDecoration(
                                       border: InputBorder.none,
@@ -191,14 +188,13 @@ class InputNumberState extends State<InputNumber>{
 
                       },
                     )),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(padding: EdgeInsets.only(top:40,right: 0),child: Text('عضویت و شرکت در مسابقات جام کیو کاملا رایگان است و \n ثبت نام به منزله پذیرفتن و قبول قوانین می باشد.',textAlign: TextAlign.center,style: TextStyle(fontFamily: 'MyFont',fontSize: 15,color: Colors.black),),)
                       ],
                     ),
-                    Padding(padding: EdgeInsets.only(top: 40),child:  Container(
+                    Padding(padding: EdgeInsets.only(top: 40,bottom: 10),child:  Container(
                       height: 60,
                       width: 150,
                       decoration: BoxDecoration(
@@ -219,51 +215,32 @@ class InputNumberState extends State<InputNumber>{
                   ],
                 ),
               ),
-            )),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(padding: EdgeInsets.only(top: 1),
-                child: Image.asset('assets/images/applogo.png',height: 250,width: 250,),),
             ),
-          ],
-        )
-    ),
-        onWillPop: () => Future(() => false));
+    )),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(padding: EdgeInsets.only(top: 1),
+              child: Image.asset('assets/images/applogo.png',height: 250,width: 250,),),
+            ),
+        ],
+      )
+    );
   }
+
   void _openLoadingDialog(BuildContext context) {
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return Scaffold(
-          backgroundColor: Colors.black26,
+          backgroundColor: Colors.white,
           body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   CircularProgressIndicator(),
-                  Padding(padding: EdgeInsets.only(top: 20,left: 10),child:
-                      SizedBox(
-                        width: 200.0,
-                        height: 100.0,
-                        child: Shimmer.fromColors(
-                          baseColor: Colors.white,
-                          highlightColor: Colors.deepPurple,
-                          child: Text(
-                            'لطفا صبر کنید',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight:
-                              FontWeight.bold,
-                                fontFamily: 'MyFont'
-                            ),
-                          ),
-                        ),
-                      )
-                  )
-
+                  Padding(padding: EdgeInsets.only(top: 20,left: 10),child:  Text('...لطفا صبر کنید',style: TextStyle(fontSize: 20,color: Colors.black,fontFamily: 'IRANSans'),),)
                 ],
               )
           ),
@@ -271,6 +248,8 @@ class InputNumberState extends State<InputNumber>{
       },
     );
   }
+
+
   void SendSms() async {
     FormData formData = FormData.fromMap({
       "userNumber": numberController.text,

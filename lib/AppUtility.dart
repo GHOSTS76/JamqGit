@@ -21,11 +21,8 @@ class AppUtility{
 
 
   CheckApplicationAvilability() async{
-    FormData formData = FormData.fromMap({
-    });
     try {
-      Response response = await Dio().post("http://jamq.ir:3000/Mainapp/ApplicationState",data:formData);
-      var AVIsAvilable = response.data['AVIsAvilable'];
+      Response response = await Dio().post("http://jamq.ir:3000/Mainapp/ApplicationState");
      return response.data;
     } catch (e) {
       print(e);

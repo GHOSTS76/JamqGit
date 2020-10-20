@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'AppUtility.dart';
 import 'InputNumber.dart';
 import 'MainPage.dart';
@@ -23,13 +24,13 @@ AppUtility Utility = new AppUtility();
 UserInfoClass UserInfo ;
 SharedPreferences LoginState;
 SharedPreferences prefs ;
-
+Socket socket;
 var alertStyle;
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    SystemChrome.setEnabledSystemUIOverlays([]);
     dio = Dio()..interceptors.add(RetryInterceptor(
         options: const RetryOptions(
           retries: 0, // Number of retries before a failure
@@ -50,7 +51,7 @@ var alertStyle;
         ),
       ),
       titleStyle: TextStyle(
-        color: Colors.deepPurple,
+        color: Colors.red,
       ),
     );
     checkInternet();
@@ -68,29 +69,29 @@ var alertStyle;
              decoration: BoxDecoration(
                  image: DecorationImage(image: AssetImage('assets/images/applogo.png'))
              ),
-           ),)
+           ),
+           )
           ),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/splashback.png'),
+                  image: AssetImage('assets/images/splashback.jpg'),
                   fit: BoxFit.fill)
           ),
         ),
       )
     );
-}
+  }
 
   checkInternet() async {
-   var ConnectionState =true;// await Utility.CheckInternet();
+   var ConnectionState = true;//await Utility.CheckInternet();
+
    if(ConnectionState){
-  var AppAvilabilityResponse =   await Utility.CheckApplicationAvilability();
-  print('BLOWME');
-  print(AppAvilabilityResponse.toString());
- var AVIsAvilable = AppAvilabilityResponse['AVIsAvilable'];
- if(AVIsAvilable){
-   checkLogin(context);
- }else
-   {
+     var AppAvilabilityResponse =   await Utility.CheckApplicationAvilability();
+     var AVIsAvilable = AppAvilabilityResponse['AVIsAvilable'];
+     if(AVIsAvilable){
+       checkLogin(context);
+     }else
+       {
      Alert(
        context: context,
        style: alertStyle,
@@ -141,9 +142,13 @@ var alertStyle;
    }
   }
   checkLogin(context) async {
+    ConnectSocket();
      LoginState = await SharedPreferences.getInstance();
      var  login = LoginState.getString('IsLoggedIn') ?? 'def';
+     print('login');
+     print(login);
      if(login.length ==10){
+       print('loooooogin');
        GetUserInfo(LoginState.getString('IsLoggedIn'));
      }else{
        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  InputNumber())),(Route<dynamic> route) => false);
@@ -157,9 +162,11 @@ var alertStyle;
     try {
       Response response = await Dio().post("http://jamq.ir:3000/Mainuser/GetUserInfoByPhone",data:formData);
       print(response.data);
-      if(response.data.toString() ==''){
+      if(response.data.toString() =='' || response.data.toString() == 'user does not exist'){
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  InputNumber())),(Route<dynamic> route) => false);
+
       }else{
+        print(response.data);
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  MainPage(response.data))),(Route<dynamic> route) => false);
       }
     } catch (e) {
@@ -167,6 +174,18 @@ var alertStyle;
     }
   }
 
+ ConnectSocket() async {
+  socket = io('http://jamq.ir:3000/', <String, dynamic>{
+    'transports': ['websocket'],
+    'autoConnect': false, // optional
+  });
+  socket.connect();
+  socket.on('connect', (_) {
+
+  print('SocketOn');
+
+  });
+}
 }
 
 

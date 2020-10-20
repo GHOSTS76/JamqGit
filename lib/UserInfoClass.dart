@@ -9,6 +9,12 @@ class UserInfoClass{
     return data[0][0]['Name'].toString();
 }
 
+
+
+String GetId(){
+    return data[0][0]['_id'].toString();
+  }
+
   String GetUserName(){
     return data[0][0]['UserName'].toString();
   }
