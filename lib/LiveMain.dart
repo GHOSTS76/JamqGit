@@ -97,9 +97,6 @@ class LiveMainState extends State<LiveMain> {
               ),
               alignment: Alignment.bottomCenter,
             ),
-            onTap: (){
-              question(context,'hi','hi','hi','hi');
-            },
           )
         ],
       ),
@@ -135,9 +132,37 @@ class LiveMainState extends State<LiveMain> {
     });
     socket.connect();
     socket.on('connect', (_) {
-
+      QuesttionReceived();
       print('SocketOn');
 
     });
+  }
+
+
+  QuesttionReceived(){
+
+    socket.on('Question received', (data) async =>
+
+        question(context,'hi','hi','hi','hi')
+
+    );
+}
+
+  EndMatch(){
+
+    socket.on('MatchEnded', (data) async =>
+
+        question(context,'hi','hi','hi','hi')
+
+    );
+  }
+
+  GetCurseWords() async {
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/MainUser/GetCursedWordsString");
+
+    } catch (e) {
+      print(e);
+    }
   }
 }
