@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'dart:html' as html;
 import 'dart:js' as js;
 import 'dart:ui' as ui;
+
+import 'package:socket_io_client/socket_io_client.dart';
 
 
 class LiveMain extends StatefulWidget {
@@ -10,8 +13,9 @@ class LiveMain extends StatefulWidget {
 }
 
 class LiveMainState extends State<LiveMain> {
+  Socket socket;
   String createdViewId = 'map_element';
-
+  List<String> CursedWords;
 
   @override
   void initState() {
@@ -26,6 +30,7 @@ class LiveMainState extends State<LiveMain> {
 
   @override
   Widget build(BuildContext context) {
+
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -93,7 +98,6 @@ class LiveMainState extends State<LiveMain> {
               alignment: Alignment.bottomCenter,
             ),
             onTap: (){
-              print('SAEEDS');
               question(context,'hi','hi','hi','hi');
             },
           )
@@ -124,4 +128,16 @@ class LiveMainState extends State<LiveMain> {
     );
   }
 
+  ConnectSocket() async {
+    socket = io('http://jamq.ir:3000/', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false, // optional
+    });
+    socket.connect();
+    socket.on('connect', (_) {
+
+      print('SocketOn');
+
+    });
+  }
 }

@@ -861,7 +861,13 @@ class ProfileState extends State<profile>{
             BirthDayController.text = ' تاریخ تولد : '+Convertdate(birthdate).toString();
             print('hereitcomes');
             gender = response.data[0][0]['Gender'];
-            GenderController.text =  ' جنسیت : '+gender;
+            if(gender){
+              GenderController.text =  ' جنسیت : آقا';
+
+            }else{
+              GenderController.text =  ' جنسیت : خانم';
+            }
+
             setState(() {
 
             });
@@ -905,6 +911,12 @@ class ProfileState extends State<profile>{
     }
 
     UpdateInformation() async {
+  var Gen;
+  if(BirthDayController.text == 'آقا'){
+    Gen = true;
+  }else{
+    Gen = false;
+  }
       FormData formData = FormData.fromMap({
         "usernumber":UserInfo.GetPhoneNumber(),
         "UserName":UserNameController.text,
@@ -914,7 +926,7 @@ class ProfileState extends State<profile>{
         "ProfilePic":jsonimg64,
         "Email":EmailController.text,
         "Gender":GenderController.text,
-        "BirthDate":BirthDayController.text,
+        "BirthDate":Gen,
       });
       try {
         Response response = await Dio().post("http://jamq.ir:3000/Mainuser/UpdateProfile",data:formData);

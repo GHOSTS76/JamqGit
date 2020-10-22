@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Shop extends StatefulWidget{
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -14,6 +15,7 @@ class Shop extends StatefulWidget{
 
 }
 class ShopState extends State<Shop>{
+
   @override
   void initState() {
     // TODO: implement initState

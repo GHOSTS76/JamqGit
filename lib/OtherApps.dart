@@ -1,10 +1,12 @@
-import 'package:confetti/confetti.dart';
+
+import 'package:aho_corasick/aho_corasick.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:show_up_animation/show_up_animation.dart';
+import 'package:flutter/services.dart';
 
 class TestClass extends StatefulWidget{
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -14,92 +16,83 @@ class TestClass extends StatefulWidget{
 }
 
 class TestState extends State<TestClass>{
-
+  List<String> curses = new List();
+  var aho;
+  Future loadfuture;
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
+    loadfuture = GetCurseWords();
+
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    double width = MediaQuery.of(context).size.width;
-    double c_width = MediaQuery.of(context).size.width*0.4;
-    double c_height = MediaQuery.of(context).size.height*0.4;
-    double P_width = MediaQuery.of(context).size.width*0.8;
-    double P_height = MediaQuery.of(context).size.height*0.8;
-    // TODO: implement build
-    return  new   LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          if(constraints.maxWidth > 1080 || constraints.maxHeight > 1920) {
-            return Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/mainbackland.jpg'),
-                      fit: BoxFit.fill)
-              ),
+    return new FutureBuilder(
+      future:loadfuture ,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        var sna = snapshot.data;
+        return snapshot.hasData ?  new Center(
+          child: Text(ChatFilter('تو یک ادم کیر مغزی',sna)),
+        ) : new Center(child: CircularProgressIndicator(),);
+      },
 
-            );
-          } else {
-            return Scaffold(
-              body: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/mainbackport.jpg'),
-                          fit: BoxFit.fill)
-                  ),
-                  child: Padding(
-                    child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Stack(
-                              children: [
-                                Container(child: Row(
-                                  children: [
-                                    Padding(
-                                      child: CircleAvatar(radius: 45, backgroundColor: Colors.blue,),
-                                      padding: EdgeInsets.only(right: 8,bottom: 6),
-
-                                    ),
-                                    Column(
-                                      children: [
-                                        new Text('Saeedszz',style: TextStyle(fontSize: 20,color: Colors.purple,fontFamily: 'MyFont'),),
-                                        Stack(
-                                          children: <Widget>[
-                                            Image.asset('assets/images/score.png',width:80,),
-                                            Padding(padding: EdgeInsets.only(top: 3,right: 35),child:   Text('10',textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
-
-                                          ],
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                  width: 440,
-                                  height: 270,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage('assets/images/profile.png'),
-                                          fit: BoxFit.fitWidth
-                                      )
-                                  ),
-                                ),
-                              ],
-                            )
-
-                          ],
-                        )
-                    ),
-                    padding: EdgeInsets.only(left: 20,right: 20),
-                  )
-              ),
-            );
-          }
-        }
     );
+
   }
 
+
+
+
+  GetCurseWords() async {
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/MainUser/GetCursedWordsString");
+      print(response);
+
+      List Dattta = response.data ;
+      for(var a = 0;a<Dattta.length;){
+        var ss  =Dattta[a];
+        print(ss);
+        curses.add(ss);
+        a++;
+      }
+      print('AAAAAAA'+curses.toString());
+      return curses;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  ChatFilter(ChatText,data){
+
+
+    final aho = AhoCorasick.fromWordList(data);
+    final results = aho.matches('کیر');
+    print(results
+        .map((match) => 'found ${match.word} at ${match.startIndex}')
+        .join('\n'));
+    // > found abc at 10
+    // > found bcd at 11
+    return results
+        .map((match) => 'found ${match.word} at ${match.startIndex}')
+        .join('\n');
+  }
+
+  GetTransactionList() async {
+    FormData formData = FormData.fromMap({
+      //"usernumber":UserInfo.GetPhoneNumber(),
+      "IsBanned":true,
+    });
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/MainUser/BanUser",data: formData);
+      if(response.data == 'UserBanned'){
+        SystemNavigator.pop();
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+    }
+  }
 }

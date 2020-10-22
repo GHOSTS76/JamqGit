@@ -327,37 +327,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
 
                                     ],
                                   ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      ListView.builder(
-                                          scrollDirection: Axis.vertical,
-                                          shrinkWrap: true,
-                                          itemCount: ActiveGamesList.length,
-                                          itemBuilder: (BuildContext context,int index){
-                                            return  new Padding(padding: EdgeInsets.all(10),child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Container(
-                                                  height: 60,
-                                                  width: width,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(20),
-                                                      color:  pink
-                                                  ),
-                                                  child:Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: <Widget>[
-
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),);
-                                          }
-                                      ),
-                                    ],
-                                  ),
+                          
                                 ]),)
                           ],
                         )

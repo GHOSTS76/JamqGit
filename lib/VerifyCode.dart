@@ -106,7 +106,7 @@ class verify_numberState extends State<VerifyCode> with TickerProviderStateMixin
                                     if(widget.Code.toString() == _code){
                                       GetUserInfo(widget.Number);
                                     }else {
-                                      Navigator.pop(context);
+
                                       Fluttertoast.showToast(
                                           msg: "کد وارد شده اشتباه میباشد.",
                                           toastLength: Toast.LENGTH_SHORT,
@@ -152,7 +152,6 @@ class verify_numberState extends State<VerifyCode> with TickerProviderStateMixin
                           if(widget.Code.toString() == _code){
                             GetUserInfo(widget.Number);
                           }else {
-                            Navigator.pop(context);
                             Fluttertoast.showToast(
                                 msg: "کد وارد شده اشتباه میباشد.",
                                 toastLength: Toast.LENGTH_SHORT,

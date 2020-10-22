@@ -166,8 +166,29 @@ var alertStyle;
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  InputNumber())),(Route<dynamic> route) => false);
 
       }else{
-        print(response.data);
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  MainPage(response.data))),(Route<dynamic> route) => false);
+       var BanState  = response.data['IsBanned'];
+       if(BanState){
+         Alert(
+           context: context,
+           style: alertStyle,
+           type: AlertType.info,
+           title: "مسدود",
+           desc: "دسترسی شما به جام کیو مسدود شده است.",
+           buttons: [
+             DialogButton(
+               child: Text(
+                 "خروج",
+                 style: TextStyle(color: Colors.white, fontSize: 20),
+               ),
+               onPressed: () => SystemNavigator.pop(),
+               width: 120,
+               color:Colors.red,
+             ),
+           ],
+         ).show();
+       }else{
+         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  MainPage(response.data))),(Route<dynamic> route) => false);
+       }
       }
     } catch (e) {
       print(e);
@@ -186,6 +207,7 @@ var alertStyle;
 
   });
 }
+
 }
 
 
