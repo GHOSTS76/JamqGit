@@ -1,3 +1,4 @@
+import 'package:aho_corasick/aho_corasick.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'dart:html' as html;
@@ -8,18 +9,19 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 
 class LiveMain extends StatefulWidget {
-
+  var MatchID;
+  LiveMain(this.MatchID);
+  LiveMain.none();
   LiveMainState createState() => LiveMainState();
 }
 
 class LiveMainState extends State<LiveMain> {
   Socket socket;
   String createdViewId = 'map_element';
-  List<String> CursedWords;
-
+  List<String> curses = new List();
+  var aho;
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -64,7 +66,13 @@ class LiveMainState extends State<LiveMain> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(padding: EdgeInsets.only(top: 20,right: 20),child:Image.asset('assets/images/applogo.png',width: 80,height: 80  ,),),
+              Padding(padding: EdgeInsets.only(top: 20,right: 20),child:InkWell(
+                child: Image.asset('assets/images/applogo.png',width: 80,height: 80  ,),
+                onTap: (){
+                  print('Clicked');
+
+                }
+              )),
               Padding(padding: EdgeInsets.only(top: 20,left: 20),child:Row(
                 children: [
                   //           Image.asset('assets/images/applogo.png'),
@@ -84,8 +92,6 @@ class LiveMainState extends State<LiveMain> {
               alignment: Alignment.bottomCenter,
             ),
             onTap: (){
-              print('SAEEDS');
-              question(context,'hi','hi','hi','hi');
             },
           ),
           InkWell(
@@ -102,27 +108,85 @@ class LiveMainState extends State<LiveMain> {
       ),
     );
   }
-  void question(BuildContext context,question,choice1,choice2,choice3){
+  void question(BuildContext context,question,choice1,choice2,choice3,QuestionId){
+    print('QS IS HERE = '+question);
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return Scaffold(
-          body: Container(
-            child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
+            body: Container(
+              child: Center(
+                  child:Stack(
+                    children: <Widget>[
+                      new Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage('assets/images/aboutusport.jpg'),
+                                fit: BoxFit.fill)
+                        ),
+                        child:Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Card(
+                              semanticContainer: true,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(45),
+                              ),
+                              margin: EdgeInsets.all(10),
+                              elevation: 10,
+                              child:Container(
+                                width: 250,
+                                height: 150,
+                                color:Colors.white,
 
-
-                  ],
-                )
-            ),
-          )
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+              ),
+            )
         );
       },
     );
+  }
+
+
+  GetCurseWords() async {
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/MainUser/GetCursedWordsString");
+      print(response);
+
+      List Dattta = response.data ;
+      for(var a = 0;a<Dattta.length;){
+        var ss  =Dattta[a];
+        print(ss);
+        curses.add(ss);
+        a++;
+      }
+      print('AAAAAAA'+curses.toString());
+      return curses;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  ChatFilter(ChatText,data){
+    final aho = AhoCorasick.fromWordList(data);
+    final results = aho.matches(ChatText);
+    print(results
+        .map((match) => 'found ${match.word} at ${match.startIndex}')
+        .join('\n'));
+    // > found abc at 10
+    // > found bcd at 11
+    return results
+        .map((match) => 'found ${match.word} at ${match.startIndex}')
+        .join('\n');
   }
 
   ConnectSocket() async {
@@ -133,6 +197,7 @@ class LiveMainState extends State<LiveMain> {
     socket.connect();
     socket.on('connect', (_) {
       QuesttionReceived();
+      EndMatch();
       print('SocketOn');
 
     });
@@ -141,28 +206,23 @@ class LiveMainState extends State<LiveMain> {
 
   QuesttionReceived(){
 
-    socket.on('Question received', (data) async =>
+    socket.on('QuestionReceived', (data) async =>
 
-        question(context,'hi','hi','hi','hi')
+        question(context,data[0]['LMQ_Question'],data[0]['LMQ_Choice1'],data[0]['LMQ_Choice2'],data[0]['LMQ_Choice3'],data[0]['_id'])
 
     );
 }
 
   EndMatch(){
-
     socket.on('MatchEnded', (data) async =>
-
-        question(context,'hi','hi','hi','hi')
-
+        print('End')
     );
   }
 
-  GetCurseWords() async {
-    try {
-      Response response = await Dio().post("http://jamq.ir:3000/MainUser/GetCursedWordsString");
 
-    } catch (e) {
-      print(e);
-    }
+
+
+  EndMatchFunction(){
+
   }
 }

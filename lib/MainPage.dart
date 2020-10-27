@@ -276,8 +276,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                    ,
                                  ),
                                  onTap: (){
-                                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  LiveMain())),(Route<dynamic> route) => false);
-
+                                   LivePage();
                                  },
                                )
                               ],
@@ -595,7 +594,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                       height: 250,
                                     ),
                                     onTap: (){
-                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  LiveMain())),(Route<dynamic> route) => false);
+
                                     },
                                   )
                                 ],
@@ -726,6 +725,24 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
     } catch (e) {
       print(e);
     }
+  }
+
+  LivePage() async{
+
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/LiveMatch/GetMainLive");
+
+      if(response.data.toString() == 'NoLive'){
+
+      }else{
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  LiveMain(response.data['_id']))),(Route<dynamic> route) => false);
+      }
+      return true;
+    } catch (e) {
+      print(e);
+    }
+
+
   }
 }
 

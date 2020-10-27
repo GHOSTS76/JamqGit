@@ -50,6 +50,7 @@ dependencies:
   flutter_radio_button_group: ^0.0.2+3
   dio: 3.0.9
   material_segmented_control: ^2.1.0+1
+  custom_radio_grouped_button: ^1.0.6+1
   aho_corasick: ^1.1.0
   rive: ^0.6.2
   url_launcher: ^5.7.2

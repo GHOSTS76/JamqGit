@@ -4,7 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:show_up_animation/show_up_animation.dart';
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 class TestClass extends StatefulWidget{
 
   @override
@@ -16,83 +17,97 @@ class TestClass extends StatefulWidget{
 }
 
 class TestState extends State<TestClass>{
-  List<String> curses = new List();
-  var aho;
-  Future loadfuture;
+
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
-    loadfuture = GetCurseWords();
+
 
   }
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder(
-      future:loadfuture ,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        var sna = snapshot.data;
-        return snapshot.hasData ?  new Center(
-          child: Text(ChatFilter('تو یک ادم کیر مغزی',sna)),
-        ) : new Center(child: CircularProgressIndicator(),);
-      },
+    var pink = Color.fromRGBO(249, 211, 248, 1);
+    var themeColor = Color.fromRGBO(19, 2, 102, 1);
+    var purplecolor = Color.fromRGBO(80, 0, 131,1);
+    double width = MediaQuery.of(context).size.width;
+    double c_width = MediaQuery.of(context).size.width*0.4;
+    double c_height = MediaQuery.of(context).size.height*0.4;
+    double P_width = MediaQuery.of(context).size.width*0.8;
+    double P_height = MediaQuery.of(context).size.height*0.8;
 
+    var profback = AssetImage('assets/images/profback.png');
+    return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/aboutusport.jpg'),
+                fit: BoxFit.fill)
+        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Card(
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(45),
+            ),
+            margin: EdgeInsets.all(10),
+            elevation: 10,
+            child:Container(
+              width: P_width,
+              height: P_height,
+              color:Colors.white,
+              child: Column(
+                children: [
+                  Padding(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.deepPurple,
+                      radius: 60,
+                      backgroundImage:  profback,
+                    ),
+                    padding: EdgeInsets.only(top: 20),
+                  ),
+                  CustomCheckBoxGroup(
+                    unSelectedColor: Theme.of(context).canvasColor,
+                    buttonLables: [
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                    ],
+                    buttonValuesList: [
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                    ],
+                    checkBoxButtonValues: (values) {
+                      print(values);
+                    },
+                    defaultSelected: ["Monday"],
+                    horizontal: true,
+                    width: 120,
+                    // hight: 50,
+                    selectedColor: Theme.of(context).accentColor,
+                    padding: 5,
+                    spacing: 0.0,
+                    // enableShape: true,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
-
   }
 
 
 
 
-  GetCurseWords() async {
-    try {
-      Response response = await Dio().post("http://jamq.ir:3000/MainUser/GetCursedWordsString");
-      print(response);
-
-      List Dattta = response.data ;
-      for(var a = 0;a<Dattta.length;){
-        var ss  =Dattta[a];
-        print(ss);
-        curses.add(ss);
-        a++;
-      }
-      print('AAAAAAA'+curses.toString());
-      return curses;
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  ChatFilter(ChatText,data){
 
 
-    final aho = AhoCorasick.fromWordList(data);
-    final results = aho.matches('کیر');
-    print(results
-        .map((match) => 'found ${match.word} at ${match.startIndex}')
-        .join('\n'));
-    // > found abc at 10
-    // > found bcd at 11
-    return results
-        .map((match) => 'found ${match.word} at ${match.startIndex}')
-        .join('\n');
-  }
-
-  GetTransactionList() async {
-    FormData formData = FormData.fromMap({
-      //"usernumber":UserInfo.GetPhoneNumber(),
-      "IsBanned":true,
-    });
-    try {
-      Response response = await Dio().post("http://jamq.ir:3000/MainUser/BanUser",data: formData);
-      if(response.data == 'UserBanned'){
-        SystemNavigator.pop();
-      }
-
-      return true;
-    } catch (e) {
-      print(e);
-    }
-  }
 }

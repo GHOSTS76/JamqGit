@@ -41,7 +41,7 @@ class JamQ extends StatelessWidget {
           "/Question": (context) => new Directionality(textDirection: TextDirection.rtl, child: Question.none()),
           "/Category": (context) => new Directionality(textDirection: TextDirection.rtl, child: Category.none()),
           "/NextQuestion": (context) => new Directionality(textDirection: TextDirection.rtl, child: NextQuestion()),
-          "/LiveMain": (context) => new Directionality(textDirection: TextDirection.rtl, child: LiveMain()),
+          "/LiveMain": (context) => new Directionality(textDirection: TextDirection.rtl, child: LiveMain.none()),
           "/SelectOp": (context) => new Directionality(textDirection: TextDirection.rtl, child: SelectOpponent.none()),
           "/OtherApps": (context) => new Directionality(textDirection: TextDirection.rtl, child: TestClass()),
           "/SendTicket": (context) => new Directionality(textDirection: TextDirection.rtl, child: SendTicket.none()),
