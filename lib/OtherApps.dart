@@ -1,5 +1,6 @@
 
 import 'package:aho_corasick/aho_corasick.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,12 @@ class TestClass extends StatefulWidget{
 }
 
 class TestState extends State<TestClass>{
+  var   selectedColor = Color.fromRGBO(80, 0, 131, 1);
+  var   UnselectedColor = Colors.white;
 
+  var pink = Color.fromRGBO(249, 211, 248, 1);
+  var themeColor = Color.fromRGBO(19, 2, 102, 1);
+  var purplecolor = Color.fromRGBO(80, 0, 131,1);
   @override
   void initState() {
     // TODO: implement initState
@@ -28,15 +34,14 @@ class TestState extends State<TestClass>{
   }
   @override
   Widget build(BuildContext context) {
-    var pink = Color.fromRGBO(249, 211, 248, 1);
-    var themeColor = Color.fromRGBO(19, 2, 102, 1);
-    var purplecolor = Color.fromRGBO(80, 0, 131,1);
+
     double width = MediaQuery.of(context).size.width;
     double c_width = MediaQuery.of(context).size.width*0.4;
     double c_height = MediaQuery.of(context).size.height*0.4;
     double P_width = MediaQuery.of(context).size.width*0.8;
-    double P_height = MediaQuery.of(context).size.height*0.8;
-
+    double P_height = MediaQuery.of(context).size.height*0.6;
+    CountDownController _controller = CountDownController();
+    bool _isPause = false;
     var profback = AssetImage('assets/images/profback.png');
     return Container(
         decoration: BoxDecoration(
@@ -45,61 +50,95 @@ class TestState extends State<TestClass>{
                 fit: BoxFit.fill)
         ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+
         children: [
-          Card(
-            semanticContainer: true,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(45),
-            ),
-            margin: EdgeInsets.all(10),
-            elevation: 10,
-            child:Container(
-              width: P_width,
-              height: P_height,
-              color:Colors.white,
-              child: Column(
-                children: [
-                  Padding(
-                    child: CircleAvatar(
-                      backgroundColor: Colors.deepPurple,
-                      radius: 60,
-                      backgroundImage:  profback,
+          Padding(
+            child:   Card(
+              semanticContainer: true,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(45),
+              ),
+              margin: EdgeInsets.all(10),
+              elevation: 10,
+              child:Container(
+                width: P_width,
+                height: P_height,
+                color:Colors.white,
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Padding(
+                          child: CircleAvatar(
+                            backgroundColor: Colors.deepPurple,
+                            radius: 60,
+                            backgroundImage:  profback,
+                          ),
+                          padding: EdgeInsets.only(top: 20),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child:   CircularCountDownTimer(
+                            duration: 10,
+                            controller: _controller,
+                            width: 150,
+                            height: 150,
+                            color: Colors.white,
+                            fillColor: purplecolor,
+                            backgroundColor: null,
+                            strokeWidth: 5.0,
+                            textStyle: TextStyle(fontSize: 22.0, color: Colors.black, fontWeight: FontWeight.bold),
+                            isReverse: false,
+                            isReverseAnimation: false,
+                            isTimerTextShown: false,
+                            onComplete: () {
+                              print('Countdown Ended');
+                              setState(() {
+                                _controller.pause();
+                                selectedColor = Colors.green;
+                                UnselectedColor = Colors.red;
+                              });
+                            },
+                          ),
+                        )
+                      ],
                     ),
-                    padding: EdgeInsets.only(top: 20),
-                  ),
-                  CustomCheckBoxGroup(
-                    unSelectedColor: Theme.of(context).canvasColor,
-                    buttonLables: [
-                      "Monday",
-                      "Tuesday",
-                      "Wednesday",
-                      "Thursday",
-                    ],
-                    buttonValuesList: [
-                      "Monday",
-                      "Tuesday",
-                      "Wednesday",
-                      "Thursday",
-                    ],
-                    checkBoxButtonValues: (values) {
-                      print(values);
-                    },
-                    defaultSelected: ["Monday"],
-                    horizontal: true,
-                    width: 120,
-                    // hight: 50,
-                    selectedColor: Theme.of(context).accentColor,
-                    padding: 5,
-                    spacing: 0.0,
-                    // enableShape: true,
-                  ),
-                ],
+                    CustomRadioButton(
+                      elevation: 5  ,
+                      height: 50,
+                      selectedBorderColor:selectedColor,
+                      unSelectedColor: UnselectedColor,
+                      unSelectedBorderColor: UnselectedColor,
+                      enableShape: true,
+                      enableButtonWrap: true,
+                      buttonLables: [
+                        "یک",
+                        "دو",
+                        "سه",
+                      ],
+                      buttonValues: [
+                        "یک",
+                        "دو",
+                        "سه",
+                      ],
+                      radioButtonValue: (values) {
+                        print(values);
+                      },
+                      horizontal: true,
+                      width: 100,
+                      selectedColor: selectedColor,
+                      padding: 10,
+                      spacing: 0.0,
+                      // enableShape: true,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
+            padding: EdgeInsets.only(top:50),
+          )
         ],
       ),
     );
