@@ -32,7 +32,7 @@ class JamQ extends StatelessWidget {
     return MaterialApp(
       title: 'جام کیو',
       debugShowCheckedModeBanner: false,
-      initialRoute: "/OtherApps",
+      initialRoute: "/SplashScreen",
         routes: {
           "/MainPage": (context) => new Directionality(textDirection: TextDirection.rtl, child: MainPage.none()),
           "/SplashScreen": (context) => new Directionality(textDirection: TextDirection.rtl, child: SplashScreen()),

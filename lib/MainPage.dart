@@ -6,6 +6,7 @@ import 'package:animated_button/animated_button.dart';
 import 'package:flutter/services.dart';
 import 'package:jamqpwa/LiveMain.dart';
 import 'package:jamqpwa/Profile.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'DrawerLayout.dart';
 import 'SelectOpponent.dart';
 import 'UserInfoClass.dart';
@@ -29,10 +30,13 @@ class MainPage extends StatefulWidget{
 class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   UserInfoClass UserInfo ;
+  Socket socket;
   List ActiveGamesList;
+  var runsocket = 0;
   @override
   void initState() {
     UserInfo = new UserInfoClass(widget.UIC);
+    ConnectSocket();
     super.initState();
 
   }
@@ -46,6 +50,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
     double P_width = MediaQuery.of(context).size.width*0.8;
     var pink = Color.fromRGBO(253, 200, 220, 1);
     double c_height = MediaQuery.of(context).size.height*0.4;
+
     return Scaffold(
         key: _scaffoldKey,
         drawer: BuildDrawerLayout(context,widget.UIC),
@@ -276,7 +281,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                    ,
                                  ),
                                  onTap: (){
-                                   LivePage();
+                                   SendLiveRequest(UserInfo.GetPhoneNumber());
                                  },
                                )
                               ],
@@ -594,7 +599,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                       height: 250,
                                     ),
                                     onTap: (){
-
+                                      SendLiveRequest(UserInfo.GetPhoneNumber());
                                     },
                                   )
                                 ],
@@ -726,22 +731,46 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
       print(e);
     }
   }
+  ConnectSocket() async {
+    if(runsocket == 0) {
+      socket = io('http://jamq.ir:3000/', <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': false, // optional
+      });
+      socket.connect();
+      socket.on('connect', (_) {
+        print(socket.id);
+        Live();
+        runsocket = 1;
+      });
+    }else{
 
-  LivePage() async{
-
-    try {
-      Response response = await Dio().post("http://jamq.ir:3000/LiveMatch/GetMainLive");
-
-      if(response.data.toString() == 'NoLive'){
-
-      }else{
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  LiveMain(response.data['_id']))),(Route<dynamic> route) => false);
-      }
-      return true;
-    } catch (e) {
-      print(e);
     }
+  }
 
+  SendLiveRequest(PId){
+    print('sended');
+    socket.emit('JoinGame', [PId]);
+  }
+  Live(){
+print('LALALALA');
+    socket.on('LiveState', (data) async =>
+
+        LivePage(data)
+
+    );
+  }
+  LivePage(data) async{
+    print(data+'AAAAA');
+    if(data =='NoLive'){
+
+    }else if(data == 'ReachMaxPlayers'){
+
+    }else if(data == 'Lose'){
+
+  }else{
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: LiveMain(data,UserInfo.GetPhoneNumber(),widget.UIC))),(Route<dynamic> route) => false);
+    }
 
   }
 }

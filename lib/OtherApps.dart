@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:aho_corasick/aho_corasick.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:dio/dio.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 class TestClass extends StatefulWidget{
 
   @override
@@ -20,7 +23,7 @@ class TestClass extends StatefulWidget{
 class TestState extends State<TestClass>{
   var   selectedColor = Color.fromRGBO(80, 0, 131, 1);
   var   UnselectedColor = Colors.white;
-
+  static Socket socket;
   var pink = Color.fromRGBO(249, 211, 248, 1);
   var themeColor = Color.fromRGBO(19, 2, 102, 1);
   var purplecolor = Color.fromRGBO(80, 0, 131,1);
@@ -30,7 +33,7 @@ class TestState extends State<TestClass>{
 
     super.initState();
 
-
+    ConnectSocket();
   }
   @override
   Widget build(BuildContext context) {
@@ -106,33 +109,34 @@ class TestState extends State<TestClass>{
                       ],
                     ),
                     CustomRadioButton(
-                      elevation: 5  ,
-                      height: 50,
-                      selectedBorderColor:selectedColor,
-                      unSelectedColor: UnselectedColor,
-                      unSelectedBorderColor: UnselectedColor,
-                      enableShape: true,
-                      enableButtonWrap: true,
-                      buttonLables: [
-                        "یک",
-                        "دو",
-                        "سه",
-                      ],
-                      buttonValues: [
-                        "یک",
-                        "دو",
-                        "سه",
-                      ],
-                      radioButtonValue: (values) {
-                        print(values);
-                      },
-                      horizontal: true,
-                      width: 100,
-                      selectedColor: selectedColor,
-                      padding: 10,
-                      spacing: 0.0,
-                      // enableShape: true,
-                    ),
+                  elevation: 5  ,
+                  height: 50,
+                  selectedBorderColor:selectedColor,
+                  unSelectedColor: UnselectedColor,
+                  unSelectedBorderColor: UnselectedColor,
+                  enableShape: true,
+                  enableButtonWrap: true,
+                  buttonLables: [
+                    "یک",
+                    "دو",
+                    "سه",
+                  ],
+                  buttonValues: [
+                    "یک",
+                    "دو",
+                    "سه",
+                  ],
+                  radioButtonValue: (values) {
+                    print(values);
+                    sendQS();
+                  },
+                  horizontal: true,
+                  width: 100,
+                  selectedColor: selectedColor,
+                  padding: 10,
+                  spacing: 0.0,
+                  // enableShape: true,
+                ),
                   ],
                 ),
               ),
@@ -143,10 +147,23 @@ class TestState extends State<TestClass>{
       ),
     );
   }
+  ConnectSocket() async {
+    socket = io('http://jamq.ir:3000/', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false, // optional
+    });
+    socket.connect();
+    socket.on('connect', (_) {
 
+      print('On Babe');
 
+    });
+  }
 
+  sendQS(){
+    print('Clicked');
 
-
-
+    socket.emit('AAA', ['','']);
+    socket.emit('SendQuestiontoUser', ['aaa','dvdcv']);
+  }
 }

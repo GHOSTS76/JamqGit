@@ -167,6 +167,7 @@ flutter:
     - assets/images/wrong.png
     - assets/images/rowbkg.png
     - assets/images/rowtitle.png
+    - assets/images/chatico.png
     - assets/anims/qssearch.json
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -90,7 +90,6 @@ class InputNumberState extends State<InputNumber>{
                                     textAlign: TextAlign.center,
                                     keyboardType: TextInputType.number,
                                     cursorColor: Colors.deepPurple,
-
                                     style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: 'MyFont'),
                                     decoration: new InputDecoration(
                                       border: InputBorder.none,

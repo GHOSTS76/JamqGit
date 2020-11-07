@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:aho_corasick/aho_corasick.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jamqpwa/LiveQuestion.dart';
+import 'package:jamqpwa/UserInfoClass.dart';
 import 'dart:html' as html;
 import 'dart:js' as js;
 import 'dart:ui' as ui;
@@ -11,20 +15,27 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 
 class LiveMain extends StatefulWidget {
-  var MatchID;
-  LiveMain(this.MatchID);
+  var MatchID,playerId,UIC;
+  LiveMain(this.MatchID,this.playerId,this.UIC);
   LiveMain.none();
   LiveMainState createState() => LiveMainState();
 }
 
 class LiveMainState extends State<LiveMain> {
+  var selectedChoice = 99;
+  var s= 0;
+  var   selectedColor = Color.fromRGBO(80, 0, 131, 1);
+  var   UnselectedColor = Colors.white;
+  CountDownController _controller = CountDownController();
   Socket socket;
   String createdViewId = 'map_element';
   List<String> curses = new List();
+  Future loadfuture;
   var aho;
   @override
   void initState() {
     super.initState();
+    loadfuture = InitFunction();
   }
 
   @override
@@ -34,12 +45,11 @@ class LiveMainState extends State<LiveMain> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
+    var purplecolor = Color.fromRGBO(80, 0, 131,1);
+    var lightpurplecolor = Color.fromRGBO(50, 0, 131,30);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
+    final numberController = TextEditingController();
     ui.platformViewRegistry.registerViewFactory(
         createdViewId,
             (int viewId) => html.IFrameElement()
@@ -51,182 +61,101 @@ class LiveMainState extends State<LiveMain> {
 </body></html>"""
           ..style.border = 'none');
 
-    return Scaffold(
-      body:   Stack(
-        children: [
-          Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey[300], width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              child: Directionality(
-                  textDirection: TextDirection.ltr,
+    return FutureBuilder(
+      future:loadfuture,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return snapshot.hasData ?  Scaffold(
+          body:   Stack(
+            children: [
+              Container(
                   child: HtmlElementView(
                     viewType: createdViewId,
                   )
-              )
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(padding: EdgeInsets.only(top: 20,right: 20),child:InkWell(
-                child: Image.asset('assets/images/applogo.png',width: 80,height: 80  ,),
-                onTap: (){
-                  print('Clicked');
-
-                }
-              )),
-              Padding(padding: EdgeInsets.only(top: 20,left: 20),child:Row(
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  //           Image.asset('assets/images/applogo.png'),
-                  Text('234',style: TextStyle(color: Colors.white,fontSize: 14,fontFamily: 'MyFont'),),
+                  Padding(padding: EdgeInsets.only(top: 20,right: 20),child:InkWell(
+                      child: Image.asset('assets/images/applogo.png',width: 80,height: 80  ,),
+                      onTap: (){
+                        print('Clicked');
+
+                      }
+                  )),
+                  Padding(padding: EdgeInsets.only(top: 20,left: 20),child:Row(
+                    children: [
+                      //           Image.asset('assets/images/applogo.png'),
+                      Text('234',style: TextStyle(color: Colors.white,fontSize: 14,fontFamily: 'MyFont'),),
+                    ],
+                  )),
+
                 ],
-              )),
+              ),
+              Align (
+                child:  Container(
+                  height: 90,
+                  width: width,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [purplecolor,lightpurplecolor ],
+                      )
+                  ),
+                ),
+                alignment: Alignment.bottomCenter,
+              ),
+              Align(
+                child: Padding(
+                  child:  InkWell(
+                    child: Container(
+                        height: 50,
+                        width: 170,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: lightpurplecolor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 3,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child:  Center(
+                          child:  Image.asset('assets/images/chatico.png',height: 30,width: 30,),
+                        )
+                    ),
+                    onTap: (){
+                      print('Tapped');
+                      Flexible(
+                          fit: FlexFit.loose,
+                          child: new Padding(padding: EdgeInsets.fromLTRB(0, 5, 40, 5),child: new TextField(
+                            controller: numberController,
+                            textAlign: TextAlign.center,
+                            keyboardType: TextInputType.number,
+                            cursorColor: Colors.deepPurple,
+                            style: TextStyle(color: Colors.black,fontSize: 16,fontFamily: 'MyFont'),
+                            decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              hintText: '9180000000',
+                            ),
+                          )));
+                    },
+                  ),
+                  padding:EdgeInsets.only(bottom: 120),
+                ),
+                alignment: Alignment.bottomRight,
+              ),
 
             ],
           ),
-          InkWell(
-            child: Align(
-              child:  Container(
-                height: 60,
-                width: width,
-                color: Colors.deepPurple,
-              ),
-              alignment: Alignment.bottomCenter,
-            ),
-            onTap: (){
-            },
-          ),
-          InkWell(
-            child: Align(
-              child:  Container(
-                height: 60,
-                width: width,
-                color: Colors.deepPurple,
-              ),
-              alignment: Alignment.bottomCenter,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-  void question(BuildContext context,question,choice1,choice2,choice3,QuestionId,AnsweingTime){
-    double c_width = MediaQuery.of(context).size.width*0.4;
-    double c_height = MediaQuery.of(context).size.height*0.4;
-    double P_width = MediaQuery.of(context).size.width*0.8;
-    double P_height = MediaQuery.of(context).size.height*0.6;
-    var pink = Color.fromRGBO(249, 211, 248, 1);
-    var themeColor = Color.fromRGBO(19, 2, 102, 1);
-    var purplecolor = Color.fromRGBO(80, 0, 131,1);
-    var   selectedColor = Color.fromRGBO(80, 0, 131, 1);
-    var   UnselectedColor = Colors.white;
-    CountDownController _controller = CountDownController();
-    bool _isPause = false;
-    var profback = AssetImage('assets/images/profback.png');
-    print('QS IS HERE = '+question);
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return Scaffold(
-            body: Column(
-
-              children: [
-                Padding(
-                  child:   Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(45),
-                    ),
-                    margin: EdgeInsets.all(10),
-                    elevation: 10,
-                    child:Container(
-                      width: P_width,
-                      height: P_height,
-                      color:Colors.white,
-                      child: Column(
-                        children: [
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Padding(
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.deepPurple,
-                                  radius: 60,
-                                  backgroundImage:  profback,
-                                ),
-                                padding: EdgeInsets.only(top: 20),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 20),
-                                child:   CircularCountDownTimer(
-                                  duration: 10,
-                                  controller: _controller,
-                                  width: 150,
-                                  height: 150,
-                                  color: Colors.white,
-                                  fillColor: purplecolor,
-                                  backgroundColor: null,
-                                  strokeWidth: 5.0,
-                                  textStyle: TextStyle(fontSize: 22.0, color: Colors.black, fontWeight: FontWeight.bold),
-                                  isReverse: false,
-                                  isReverseAnimation: false,
-                                  isTimerTextShown: false,
-                                  onComplete: () {
-                                    print('Countdown Ended');
-                                    setState(() {
-                                      _controller.pause();
-                                      selectedColor = Colors.green;
-                                      UnselectedColor = Colors.red;
-                                    });
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                          CustomRadioButton(
-                            elevation: 5  ,
-                            height: 50,
-                            selectedBorderColor:selectedColor,
-                            unSelectedColor: UnselectedColor,
-                            unSelectedBorderColor: UnselectedColor,
-                            enableShape: true,
-                            enableButtonWrap: true,
-                            buttonLables: [
-                              "یک",
-                              "دو",
-                              "سه",
-                            ],
-                            buttonValues: [
-                              "یک",
-                              "دو",
-                              "سه",
-                            ],
-                            radioButtonValue: (values) {
-                              print(values);
-                            },
-                            horizontal: true,
-                            width: 100,
-                            selectedColor: selectedColor,
-                            padding: 10,
-                            spacing: 0.0,
-                            // enableShape: true,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  padding: EdgeInsets.only(top:50),
-                )
-              ],
-            ),
-        );
+        ): new Center(child: CircularProgressIndicator(),);
       },
     );
   }
+
 
 
   GetCurseWords() async {
@@ -242,6 +171,7 @@ class LiveMainState extends State<LiveMain> {
         a++;
       }
       print('AAAAAAA'+curses.toString());
+      s = 1;
       return curses;
     } catch (e) {
       print(e);
@@ -251,14 +181,9 @@ class LiveMainState extends State<LiveMain> {
   ChatFilter(ChatText,data){
     final aho = AhoCorasick.fromWordList(data);
     final results = aho.matches(ChatText);
-    print(results
-        .map((match) => 'found ${match.word} at ${match.startIndex}')
-        .join('\n'));
-    // > found abc at 10
-    // > found bcd at 11
-    return results
-        .map((match) => 'found ${match.word} at ${match.startIndex}')
-        .join('\n');
+    print(results.map((match) => 'found ${match.word} at ${match.startIndex}').join('\n'));
+
+    return results.map((match) => 'found ${match.word} at ${match.startIndex}').join('\n');
   }
 
   ConnectSocket() async {
@@ -270,17 +195,27 @@ class LiveMainState extends State<LiveMain> {
     socket.on('connect', (_) {
       QuesttionReceived();
       EndMatch();
-      print('SocketOn');
+      print('LiveMainSocketOn');
 
     });
   }
 
+  InitFunction() async{
+    if(s == 0){
+      ConnectSocket();
+      await GetCurseWords();
+    }else{
+
+    }
+
+    return true;
+  }
 
   QuesttionReceived(){
 
     socket.on('QuestionReceived', (data) async =>
 
-        question(context,data[0]['LMQ_Question'],data[0]['LMQ_Choice1'],data[0]['LMQ_Choice2'],data[0]['LMQ_Choice3'],data[0]['_id'],data[1])
+    QuestionReceivedFunction(data)
 
     );
 }
@@ -292,11 +227,34 @@ class LiveMainState extends State<LiveMain> {
   }
 
 
+QuestionReceivedFunction(data) async {
+    socket.disconnect();
 
+  var _ParsedData = await jsonDecode(data.toString());
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => new Directionality(textDirection: TextDirection.rtl,
+        child:
+        LiveQuestion(_ParsedData[0][0]['LMQ_Question'],_ParsedData[0][0]['LMQ_Choice1'],_ParsedData[0][0]['LMQ_Choice2'],_ParsedData[0][0]['LMQ_Choice3'],_ParsedData[0][0]['_id'],int.parse(_ParsedData[1].toString()),widget.MatchID,widget.playerId,widget.UIC)),),
+  );
+
+}
 
   EndMatchFunction(){
-
     print('EndMatchRans');
+  }
+
+  QuestionAnalyzer(){
 
   }
+
+  SendPmToChat(){
+
+
+  }
+
+
+
+
+
 }

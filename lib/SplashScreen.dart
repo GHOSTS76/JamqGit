@@ -142,7 +142,6 @@ var alertStyle;
    }
   }
   checkLogin(context) async {
-    ConnectSocket();
      LoginState = await SharedPreferences.getInstance();
      var  login = LoginState.getString('IsLoggedIn') ?? 'def';
      print('login');
@@ -164,9 +163,9 @@ var alertStyle;
       print(response.data);
       if(response.data.toString() =='' || response.data.toString() == 'user does not exist'){
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  InputNumber())),(Route<dynamic> route) => false);
-
       }else{
-       var BanState  = response.data['IsBanned'];
+        print('BanState');
+       var BanState  = response.data[0][0]['IsBanned'];
        if(BanState){
          Alert(
            context: context,
@@ -187,6 +186,9 @@ var alertStyle;
            ],
          ).show();
        }else{
+
+         print('BALALOCA');
+         print(response.data);
          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  MainPage(response.data))),(Route<dynamic> route) => false);
        }
       }
@@ -194,19 +196,6 @@ var alertStyle;
       print(e);
     }
   }
-
- ConnectSocket() async {
-  socket = io('http://jamq.ir:3000/', <String, dynamic>{
-    'transports': ['websocket'],
-    'autoConnect': false, // optional
-  });
-  socket.connect();
-  socket.on('connect', (_) {
-
-  print('SocketOn');
-
-  });
-}
 
 }
 
