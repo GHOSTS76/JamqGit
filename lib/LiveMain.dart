@@ -6,12 +6,13 @@ import 'package:custom_radio_grouped_button/CustomButtons/CustomRadioButton.dart
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jamqpwa/LiveQuestion.dart';
+import 'package:jamqpwa/MainPage.dart';
 import 'package:jamqpwa/UserInfoClass.dart';
-import 'dart:html' as html;
-import 'dart:js' as js;
-import 'dart:ui' as ui;
+import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:video_player/video_player.dart';
 
 
 class LiveMain extends StatefulWidget {
@@ -24,6 +25,7 @@ class LiveMain extends StatefulWidget {
 class LiveMainState extends State<LiveMain> {
   var selectedChoice = 99;
   var s= 0;
+  var Players = 0;
   var   selectedColor = Color.fromRGBO(80, 0, 131, 1);
   var   UnselectedColor = Colors.white;
   CountDownController _controller = CountDownController();
@@ -32,11 +34,20 @@ class LiveMainState extends State<LiveMain> {
   List<String> curses = new List();
   Future loadfuture;
   var aho;
+  VideoPlayerController _playerController;
+
   @override
   void initState() {
     super.initState();
     loadfuture = InitFunction();
+    _playerController = VideoPlayerController.network(
+        'https://jamq.arvanlive.com/hls/mainlive/mainlive.m3u8')
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
   }
+
 
   @override
   void dispose() {
@@ -50,16 +61,16 @@ class LiveMainState extends State<LiveMain> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final numberController = TextEditingController();
-    ui.platformViewRegistry.registerViewFactory(
-        createdViewId,
-            (int viewId) => html.IFrameElement()
-          ..srcdoc = """<!DOCTYPE html><html>
-          <head><title>Page Title</title></head><body> <div> 
-    <object type="text/html" data="https://player.arvancloud.com/index.html?config=https://jamq.arvanlive.com/3VKWw3WZXd/3ANWJwnlmb/origin_config.json" width="""+width.toString()+"""+px" height="""+height.toString()+"""px" style="overflow:auto;border:0px ridge blue">
-    </object>
- </div>
-</body></html>"""
-          ..style.border = 'none');
+//    ui.platformViewRegistry.registerViewFactory(
+//        createdViewId,
+//            (int viewId) => html.IFrameElement()
+//          ..srcdoc = """<!DOCTYPE html><html>
+//          <head><title>Page Title</title></head><body> <div>
+//    <object type="text/html" data="https://player.arvancloud.com/index.html?config=https://jamq.arvanlive.com/3VKWw3WZXd/3ANWJwnlmb/origin_config.json" width="""+width.toString()+"""+px" height="""+height.toString()+"""px" style="overflow:auto;border:0px ridge blue">
+//    </object>
+// </div>
+//</body></html>"""
+//          ..style.border = 'none');
 
     return FutureBuilder(
       future:loadfuture,
@@ -68,9 +79,12 @@ class LiveMainState extends State<LiveMain> {
           body:   Stack(
             children: [
               Container(
-                  child: HtmlElementView(
-                    viewType: createdViewId,
+                  child: _playerController.value.initialized
+                      ? AspectRatio(
+                    aspectRatio: _playerController.value.aspectRatio,
+                    child: VideoPlayer(_playerController),
                   )
+                      : Container(),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +99,7 @@ class LiveMainState extends State<LiveMain> {
                   Padding(padding: EdgeInsets.only(top: 20,left: 20),child:Row(
                     children: [
                       //           Image.asset('assets/images/applogo.png'),
-                      Text('234',style: TextStyle(color: Colors.white,fontSize: 14,fontFamily: 'MyFont'),),
+                      Text(Players.toString(),style: TextStyle(color: Colors.white,fontSize: 14,fontFamily: 'MyFont'),),
                     ],
                   )),
 
@@ -181,9 +195,7 @@ class LiveMainState extends State<LiveMain> {
   ChatFilter(ChatText,data){
     final aho = AhoCorasick.fromWordList(data);
     final results = aho.matches(ChatText);
-    print(results.map((match) => 'found ${match.word} at ${match.startIndex}').join('\n'));
-
-    return results.map((match) => 'found ${match.word} at ${match.startIndex}').join('\n');
+    return results.map((match) => 'found');
   }
 
   ConnectSocket() async {
@@ -193,6 +205,7 @@ class LiveMainState extends State<LiveMain> {
     });
     socket.connect();
     socket.on('connect', (_) {
+      socket.emit('SubmitId',widget.playerId);
       QuesttionReceived();
       EndMatch();
       print('LiveMainSocketOn');
@@ -200,9 +213,11 @@ class LiveMainState extends State<LiveMain> {
     });
   }
 
+
   InitFunction() async{
     if(s == 0){
       ConnectSocket();
+      getPlayers(widget.MatchID);
       await GetCurseWords();
     }else{
 
@@ -215,35 +230,97 @@ class LiveMainState extends State<LiveMain> {
 
     socket.on('QuestionReceived', (data) async =>
 
-    QuestionReceivedFunction(data)
+        QuestionReceivedFunction(data)
 
     );
-}
+  }
 
   EndMatch(){
     socket.on('MatchEnded', (data) async =>
-    EndMatchFunction()
+        EndMatchFunction(data)
     );
   }
 
 
-QuestionReceivedFunction(data) async {
+  QuestionReceivedFunction(data) async {
     socket.disconnect();
 
-  var _ParsedData = await jsonDecode(data.toString());
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => new Directionality(textDirection: TextDirection.rtl,
-        child:
-        LiveQuestion(_ParsedData[0][0]['LMQ_Question'],_ParsedData[0][0]['LMQ_Choice1'],_ParsedData[0][0]['LMQ_Choice2'],_ParsedData[0][0]['LMQ_Choice3'],_ParsedData[0][0]['_id'],int.parse(_ParsedData[1].toString()),widget.MatchID,widget.playerId,widget.UIC)),),
-  );
+    var _ParsedData = await jsonDecode(data.toString());
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => new Directionality(textDirection: TextDirection.rtl,
+          child:
+          LiveQuestion(_ParsedData[0][0]['LMQ_Question'],_ParsedData[0][0]['LMQ_Choice1'],_ParsedData[0][0]['LMQ_Choice2'],_ParsedData[0][0]['LMQ_Choice3'],_ParsedData[0][0]['_id'],int.parse(_ParsedData[1].toString()),widget.MatchID,widget.playerId,widget.UIC)),),
+    );
 
-}
-
-  EndMatchFunction(){
-    print('EndMatchRans');
   }
 
+  EndMatchFunction(data){
+
+    if(data == widget.MatchID){
+      checkForWin(data);
+    }
+
+  }
+
+  checkForWin(mid) async {
+    var Place ;
+    FormData formData = FormData.fromMap({
+      "LM_PlayerId":widget.playerId,
+      "LM_MatchID": mid,
+    });
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/LiveMatch/GetLiveMatchByMId",data:formData);
+      if(response.data == 'Lost'){
+        Alert(
+          context: context,
+          type: AlertType.info,
+          title: "برنده نشدی",
+          desc: "جزو سه نفر اول نبودی ولی اشکالی نداره تو لایو بعدی بیشتر تلاش کن.",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "باشه",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () =>Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  MainPage(widget.UIC))),(Route<dynamic> route) => false),
+              width: 120,
+              color:Colors.red,
+            ),
+          ],
+        ).show();
+      }else{
+
+        if(response.data =='1'){
+          Place = 'اول';
+        }else if(response.data == '2'){
+          Place = 'دوم';
+        }else if(response.data == '3'){
+          Place = 'سوم';
+        }
+        Alert(
+          context: context,
+          type: AlertType.info,
+          title: "افرین ",
+          desc: ' شدی ، همکارامون بزودی جایزت رو برات واریز میکنن، تو لایو بعدی میبینمت.'+Place,
+          buttons: [
+            DialogButton(
+              child: Text(
+                "باشه",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  MainPage(widget.UIC))),(Route<dynamic> route) => false),
+              width: 120,
+              color:Colors.red,
+            ),
+          ],
+        ).show();
+      }
+
+    } catch (e) {
+      print(e);
+    }
+  }
   QuestionAnalyzer(){
 
   }
@@ -253,8 +330,20 @@ QuestionReceivedFunction(data) async {
 
   }
 
+  getPlayers(mid) async {
+    FormData formData = FormData.fromMap({
+      "Id": mid,
+    });
+    try {
+    Response response = await Dio().post("http://jamq.ir:3000/LiveMatch/GetLiveMatchByMId",data:formData);
+    Players = response.data[0]['LmPlayersInGame'];
+    setState(() {
+
+    });
+    } catch (e) {
+      print(e);
+    }
 
 
-
-
+}
 }

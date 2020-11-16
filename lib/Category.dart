@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jamqpwa/Question.dart';
 import 'package:show_up_animation/show_up_animation.dart';
@@ -190,59 +189,59 @@ class CategoryState extends State<Category>{
                                         child: Padding(child:  Text('دسته مورد نظرت رو انتخاب کن',style: TextStyle(fontFamily: 'MyFont',fontSize: 26,fontWeight: FontWeight.bold,color: Colors.white),),padding: EdgeInsets.only(top: 10),)
                                     )
                                 ),padding: EdgeInsets.only(left: 30,right: 30),),
-                               Padding(padding: EdgeInsets.only(left: 20,right: 20),child:  Card(
-                                 semanticContainer: true,
-                                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                                 shape: RoundedRectangleBorder(
-                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(100),bottomRight:  Radius.circular(100),bottomLeft:  Radius.circular(40),topRight:  Radius.circular(40)),
-                                 ),
-                                 margin: EdgeInsets.all(10),
-                                 elevation: 5,
-                                 child:Container(
-                                     width: width,
-                                     height: 280,
-                                     color: pink,
-                                     child: Padding(
-                                       padding: EdgeInsets.only(top: 20,bottom: 20),
-                                       child: Column(
-                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                         children: [
-                                           ListView.builder(
-                                               scrollDirection: Axis.vertical,
-                                               shrinkWrap: true,
-                                               itemCount: Catdata.length,
-                                               itemBuilder: (BuildContext context,int index){
-                                                 return  new Padding(padding: EdgeInsets.all(10),child: Row(
-                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                   children: <Widget>[
-                                                     Container(
-                                                       height: 60,
-                                                       width: 170,
-                                                       decoration: BoxDecoration(
-                                                           borderRadius: BorderRadius.circular(20),
-                                                           gradient: LinearGradient(
-                                                             begin: Alignment.topCenter,
-                                                             end: Alignment.bottomCenter,
-                                                             colors: [purplecolor,themeColor],
-                                                           )
-                                                       ),
-                                                       child:Row(
-                                                         mainAxisAlignment: MainAxisAlignment.center,
-                                                         children: <Widget>[
-                                                           Padding(padding: EdgeInsets.all(5),child:  Image.network(Catdata[index]['CaIcon']),),
-                                                           new Text(Catdata[index]['CaName'],style:TextStyle(fontSize: 20,color: Colors.white,fontFamily: 'MyFont'),),
-                                                         ],
-                                                       ),
-                                                     ),
-                                                   ],
-                                                 ),);
-                                               }
-                                           ),
-                                         ],
-                                       ),
-                                     )
-                                 ),
-                               ),)
+                                Padding(padding: EdgeInsets.only(left: 20,right: 20),child:  Card(
+                                  semanticContainer: true,
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(100),bottomRight:  Radius.circular(100),bottomLeft:  Radius.circular(40),topRight:  Radius.circular(40)),
+                                  ),
+                                  margin: EdgeInsets.all(10),
+                                  elevation: 5,
+                                  child:Container(
+                                      width: width,
+                                      height: 280,
+                                      color: pink,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(top: 20,bottom: 20),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            ListView.builder(
+                                                scrollDirection: Axis.vertical,
+                                                shrinkWrap: true,
+                                                itemCount: Catdata.length,
+                                                itemBuilder: (BuildContext context,int index){
+                                                  return  new Padding(padding: EdgeInsets.all(10),child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        height: 60,
+                                                        width: 170,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(20),
+                                                            gradient: LinearGradient(
+                                                              begin: Alignment.topCenter,
+                                                              end: Alignment.bottomCenter,
+                                                              colors: [purplecolor,themeColor],
+                                                            )
+                                                        ),
+                                                        child:Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            Padding(padding: EdgeInsets.all(5),child:  Image.network(Catdata[index]['CaIcon']),),
+                                                            new Text(Catdata[index]['CaName'],style:TextStyle(fontSize: 20,color: Colors.white,fontFamily: 'MyFont'),),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),);
+                                                }
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                  ),
+                                ),)
                               ],
                             )
                           ],

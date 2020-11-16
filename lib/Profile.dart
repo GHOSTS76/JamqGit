@@ -835,6 +835,7 @@ class ProfileState extends State<profile>{
         if(response.data == '' || response.data == null){
           //log out user
        }else{
+          print(response.data);
           userData = response.data;
           if(response.data[0][0]['UserName']== 'کاربر مهمان'){
             name = 'تعیین نشده است';
@@ -925,8 +926,8 @@ class ProfileState extends State<profile>{
         "Family":FamilyInputController.text,
         "ProfilePic":jsonimg64,
         "Email":EmailController.text,
-        "Gender":GenderController.text,
-        "BirthDate":Gen,
+        "Gender":Gen,
+        "BirthDate":birthdate,
       });
       try {
         Response response = await Dio().post("http://jamq.ir:3000/Mainuser/UpdateProfile",data:formData);
