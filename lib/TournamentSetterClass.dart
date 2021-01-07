@@ -3,13 +3,9 @@ class TournamentSetter{
   var SpecialLeage= [],SpeedLeage= [],TodayOne= [],TodayTwo= [],TomorowOne= [],TomorowTwo= [];
   TournamentSetter(this.TournamentData){
     for(var counter = 0 ;counter < TournamentData.length;counter++) {
-      print('fdsfdlfdslfslsdlfsd');
-      print(counter);
-      print(TournamentData[counter]['TrType']);
       if (TournamentData[counter]['TrType'] == 'SpecialLeage') {
        // SeparateData[0] = TournamentData[counter];
         SpeedLeage.add(TournamentData[counter]);
-        print('Yohahahaha');
       } else if (TournamentData[counter]['TrType'] == 'SpeedLeage') {
         SpecialLeage.add(TournamentData[counter]);
       } else if (TournamentData[counter]['TrType'] == 'TodayOne') {
@@ -26,10 +22,6 @@ class TournamentSetter{
 
   }
   String GetSpecialLeageData(Type) {
-
-    print('ASASASASasasasaS');
-
-
     if (Type == 'id') {
      return SpecialLeage[0]['_id'];
     } else if (Type == 'Title') {

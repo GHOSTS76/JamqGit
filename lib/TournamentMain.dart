@@ -30,15 +30,16 @@ class TournamentMainState extends State<TournamentMain>{
   Future loadfuture;
   var   UnselectedColor = Colors.white;
   CountdownTimerController controller;
-  int endTime;
+  int endTime = DateTime.now().millisecondsSinceEpoch  * 13200 ;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     print('EndTime');
-    print(TournamentData.GetSpecialLeageData('Time').toString());
-    endTime = DateTime.parse(TournamentData.GetSpecialLeageData('Time').toString()).millisecondsSinceEpoch;
     print(endTime);
+    print(DateTime.now().toString());
+
     controller = CountdownTimerController(endTime: endTime, onEnd: (){print('Ended'); });
     loadfuture = GetTournaments();
   }
@@ -133,41 +134,36 @@ class TournamentMainState extends State<TournamentMain>{
                                                       controller: controller,
                                                       widgetBuilder: (BuildContext context, CurrentRemainingTime time) {
                                                         if (time == null) {
-                                                          return Text('00:00:00',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),);
+                                                          return Text('00:00:00',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),);
                                                         }
                                                         List<Widget> list = [];
-                                                        if (time.days != null) {
-                                                          list.add(Row(
-                                                            children: <Widget>[
-                                                              Icon(Icons.sentiment_dissatisfied),
-                                                              Text(time.days.toString()),
-                                                            ],
-                                                          ));
-                                                        }
-                                                        if (time.hours != null) {
-                                                          list.add(Row(
-                                                            children: <Widget>[
-                                                              Icon(Icons.sentiment_satisfied),
-                                                              Text(time.hours.toString(),style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
-                                                            ],
-                                                          ));
-                                                        }
-                                                        if (time.min != null) {
-                                                          list.add(Row(
-                                                            children: <Widget>[
-                                                              Icon(Icons.sentiment_very_dissatisfied),
-                                                              Text(time.min.toString(),style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
-                                                            ],
-                                                          ));
-                                                        }
                                                         if (time.sec != null) {
                                                           list.add(Row(
                                                             children: <Widget>[
-                                                              Icon(Icons.sentiment_very_satisfied),
-                                                              Text(time.sec.toString(),style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
+                                                              Text(time.sec.toString(),style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),
                                                             ],
                                                           ));
                                                         }
+                                                        list.add( Text(' : ',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),);
+                                                        if (time.min != null) {
+                                                          list.add(Row(
+                                                            children: <Widget>[
+                                                              Text(time.min.toString(),style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),
+                                                            ],
+                                                          ));
+                                                        }
+                                                        list.add( Text(' : ',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),);
+
+                                                        if (time.hours != null) {
+                                                          list.add(Row(
+                                                            children: <Widget>[
+                                                              Text(time.hours.toString(),style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),
+                                                            ],
+                                                          ));
+                                                        }
+
+
+
 
                                                         return Row(
                                                           mainAxisAlignment: MainAxisAlignment.center,
