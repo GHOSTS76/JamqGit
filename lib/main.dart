@@ -4,8 +4,11 @@ import 'package:jamqpwa/Invite.dart';
 import 'package:jamqpwa/LiveMain.dart';
 import 'package:jamqpwa/NextQuestion.dart';
 import 'package:jamqpwa/OtherApps.dart';
+import 'package:jamqpwa/PayBrowser.dart';
 import 'package:jamqpwa/Question.dart';
 import 'package:jamqpwa/SelectOpponent.dart';
+import 'package:jamqpwa/TournamentMain.dart';
+import 'package:jamqpwa/TournamentNextQuestion.dart';
 import 'package:jamqpwa/TransactionList.dart';
 import 'package:jamqpwa/transactiondetails.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
@@ -14,6 +17,7 @@ import 'AboutUs.dart';
 import 'InputNumber.dart';
 import 'MainPage.dart';
 import 'OneVsOneMatchMainPage.dart';
+import 'PeymentResult.dart';
 import 'Profile.dart';
 import 'SendTicket.dart';
 import 'Shop.dart';
@@ -36,6 +40,8 @@ class JamQ extends StatelessWidget {
         routes: {
           "/MainPage": (context) => new Directionality(textDirection: TextDirection.rtl, child: MainPage.none()),
           "/SplashScreen": (context) => new Directionality(textDirection: TextDirection.rtl, child: SplashScreen()),
+          "/Pay": (context) => new Directionality(textDirection: TextDirection.rtl, child: PayBrowser.none()),
+          "/PaymentResult": (context) => new Directionality(textDirection: TextDirection.rtl, child: PaymentResult()),
           "/InputNumber": (context) => new Directionality(textDirection: TextDirection.rtl, child: InputNumber()),
           "/tickets": (context) => new Directionality(textDirection: TextDirection.rtl, child: Tickets.none()),
           "/Question": (context) => new Directionality(textDirection: TextDirection.rtl, child: Question.none()),
@@ -43,10 +49,12 @@ class JamQ extends StatelessWidget {
           "/NextQuestion": (context) => new Directionality(textDirection: TextDirection.rtl, child: NextQuestion()),
           "/LiveMain": (context) => new Directionality(textDirection: TextDirection.rtl, child: LiveMain.none()),
           "/SelectOp": (context) => new Directionality(textDirection: TextDirection.rtl, child: SelectOpponent.none()),
+          "/TrMain": (context) => new Directionality(textDirection: TextDirection.rtl, child: TournamentMain.none()),
           "/OtherApps": (context) => new Directionality(textDirection: TextDirection.rtl, child: TestClass()),
           "/SendTicket": (context) => new Directionality(textDirection: TextDirection.rtl, child: SendTicket.none()),
+          "/Trnextqs": (context) => new Directionality(textDirection: TextDirection.rtl, child: Tournament.none()),
           "/VerifyCode": (context) => new Directionality(textDirection: TextDirection.rtl, child: VerifyCode('', '')),
-          "/Shop": (context) => new Directionality(textDirection: TextDirection.rtl, child: new Directionality(textDirection: TextDirection.rtl, child: Shop())),
+          "/Shop": (context) => new Directionality(textDirection: TextDirection.rtl, child: new Directionality(textDirection: TextDirection.rtl, child: Shop.none())),
           "/OneVsOneMatch": (context) => new Directionality(textDirection: TextDirection.rtl, child: new Directionality(textDirection: TextDirection.rtl, child: OneVsOneMatch())),
           "/Profile": (context) => new Directionality(textDirection: TextDirection.rtl, child: new Directionality(textDirection: TextDirection.rtl, child: profile.none())),
           "/AboutUs": (context) => new Directionality(textDirection: TextDirection.rtl, child: new Directionality(textDirection: TextDirection.rtl, child: Aboutus.none())),

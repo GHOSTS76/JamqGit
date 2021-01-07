@@ -230,6 +230,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.4"
+  flutter_countdown_timer:
+    dependency: "direct main"
+    description:
+      name: flutter_countdown_timer
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
   flutter_markdown:
     dependency: transitive
     description:
@@ -352,6 +359,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.5"
+  link:
+    dependency: "direct main"
+    description:
+      name: link
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.0"
   logging:
     dependency: transitive
     description:
@@ -595,6 +609,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.8.0-nullsafety"
+  sprintf:
+    dependency: transitive
+    description:
+      name: sprintf
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.1.0"
   sqflite:
     dependency: transitive
     description:
@@ -756,6 +777,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.0"
+  zarinpal:
+    dependency: "direct main"
+    description:
+      name: zarinpal
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.3"
 sdks:
   dart: ">=2.10.0-0.0.dev <2.10.0"
   flutter: ">=1.20.0 <2.0.0"

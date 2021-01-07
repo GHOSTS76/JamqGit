@@ -227,8 +227,6 @@ class LiveQuestionState extends State<LiveQuestion>{
     });
     try {
       Response response = await Dio().post("http://jamq.ir:3000/LiveMatch/QuestionAnalyzer",data:formData);
-
-      print('ALALALALALLAAL');
       print(response.data.toString());
       if(response.data == 'TrueAnswer'){
         setState(() {
@@ -246,6 +244,7 @@ class LiveQuestionState extends State<LiveQuestion>{
       print(e);
     }
   }
+
   ConnectSocket() async {
     socket = io('http://jamq.ir:3000/', <String, dynamic>{
       'transports': ['websocket'],

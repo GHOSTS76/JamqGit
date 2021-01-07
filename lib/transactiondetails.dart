@@ -51,7 +51,7 @@ class TransactionDetailsState extends State<TransactionDetails>{
         future:loadfuture,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return snapshot.hasData ?
-          new Scaffold(body: new LayoutBuilder(
+          new Scaffold(body: new  LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 if(constraints.maxWidth > 1080 || constraints.maxHeight > 1920) {
                   return Container(
@@ -168,7 +168,7 @@ class TransactionDetailsState extends State<TransactionDetails>{
                                               ),
                                             ),
                                             Text(
-                                              Data[0]['TCPrice']+' هزار تومان',
+                                              Data[0]['TCPrice'].toString()+' هزار تومان',
                                               style: TextStyle(
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.bold,
@@ -205,7 +205,7 @@ class TransactionDetailsState extends State<TransactionDetails>{
                                               ),
                                             ),
                                             Text(
-                                              CheckVoucher(Data[0]['TCPrice']),
+                                              CheckVoucher(Data[0]['TCVoucher'].toString()),
                                               style: TextStyle(
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.bold,
@@ -242,7 +242,7 @@ class TransactionDetailsState extends State<TransactionDetails>{
                                               ),
                                             ),
                                             Text(
-                                              Data[0]['TCPackage'],
+                                              Data[0]['TCPackageName'],
                                               style: TextStyle(
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.bold,
@@ -514,7 +514,7 @@ class TransactionDetailsState extends State<TransactionDetails>{
                                                     ),
                                                   ),
                                                   Text(
-                                                    Data[0]['TCPackage'],
+                                                    Data[0]['TCPackageName'],
                                                     style: TextStyle(
                                                         fontSize: 18.0,
                                                         fontWeight: FontWeight.bold,
@@ -605,16 +605,15 @@ class TransactionDetailsState extends State<TransactionDetails>{
   }
 
   CheckVoucher(String voucher){
-    if(voucher == 'null'){
+    if(voucher == 'NoVoucher'){
       return 'ندارد';
     }else{
-      return voucher;
+      return 'دارد';
     }
 
   }
 
   TransactionState(var state){
-
     if(state){
       StateColor = Color.fromRGBO(0, 100, 0, 1);
       return "موفق";
@@ -637,7 +636,7 @@ class TransactionDetailsState extends State<TransactionDetails>{
       Response response = await Dio().post("http://jamq.ir:3000/Transaction/GetTransactionsByTransactionId",data: formData);
       print(response);
       Data = response.data;
-      return 'true';
+      return Data;
     } catch (e) {
       print(e);
     }

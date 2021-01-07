@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:jamqpwa/Invite.dart';
 import 'package:jamqpwa/Ticket.dart';
+import 'package:jamqpwa/Wallet.dart';
 
 import 'AboutUs.dart';
 import 'Profile.dart';
@@ -17,21 +18,23 @@ Drawer BuildDrawerLayout(BuildContext context,var userdata){
               child: Image.asset('assets/images/applogo.png',width: 150,height: 150,),
           ),
 
-//          new ListTile(
-//            leading:
-//            ImageIcon(
-//              AssetImage("assets/images/dhome.png"),
-//              color: Colors.white,
-//            ),
-//            title: new Text('خانه',style:TextStyle(
-//              fontSize: 18,
-//              color: Colors.white,
-//              fontWeight: FontWeight.bold
-//            )),
-//            onTap: (){
-//            },
-//          ),
-//
+          new ListTile(
+            leading:
+            ImageIcon(
+              AssetImage("assets/images/dwallet.png"),
+              color: Colors.white,
+            ),
+            title: new Text('کیف پول',style:TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+              fontWeight: FontWeight.bold
+            )),
+            onTap: (){
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:Wallet(userdata))),(Route<dynamic> route) => false);
+
+            },
+          ),
+
           new ListTile(
             leading:
             ImageIcon(

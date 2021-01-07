@@ -186,9 +186,6 @@ var alertStyle;
            ],
          ).show();
        }else{
-
-         print('BALALOCA');
-         print(response.data);
          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  MainPage(response.data))),(Route<dynamic> route) => false);
        }
       }

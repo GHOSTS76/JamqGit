@@ -78,209 +78,212 @@ class TransactionListState extends State<TransactionList>{
                       Container(
                           height: height,
                           color: Colors.white,
-                          child: Column(
-                            children: [
-                              Padding(padding: EdgeInsets.only(right: 30,left: 30,top: 20),child:
-                              Column(children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'تعداد تراکنش ها',
-                                      style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: themeColor,
-                                          fontFamily: 'MyFont'
-                                      ),
-                                    ),
-                                    Text(
-                                      'تراکنش های موفق',
-                                      style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: themeColor,
-                                          fontFamily: 'MyFont'
-                                      ),
-                                    ),
-                                    Text(
-                                      'تراکنش های ناموفق',
-                                      style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: themeColor,
-                                          fontFamily: 'MyFont'
-                                      ),
-                                    ),
-                                  ],),
-                                Padding(padding: EdgeInsets.only(left: 30,right: 30,top: 30),child:  Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: themeColor
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Padding(padding: EdgeInsets.only(right: 30,left: 30,top: 20),child:
+                                Column(children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'تعداد تراکنش ها',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: themeColor,
+                                            fontFamily: 'MyFont'
                                         ),
-                                        child: Center(
-                                          child:  Text(data.length.toString(),style: TextStyle(fontSize: 20,fontFamily: 'MyFont',color: Colors.white ),),
-                                        )
-                                    ),
-                                    Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: themeColor
+                                      ),
+                                      Text(
+                                        'تراکنش های موفق',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: themeColor,
+                                            fontFamily: 'MyFont'
                                         ),
-                                        child: Center(
-                                          child:  Text(success.toString(),style: TextStyle(fontSize: 20,fontFamily: 'MyFont',color: Colors.white ),),
-                                        )
-                                    ),
-                                    Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: themeColor
+                                      ),
+                                      Text(
+                                        'تراکنش های ناموفق',
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: themeColor,
+                                            fontFamily: 'MyFont'
                                         ),
-                                        child: Center(
-                                          child:  Text(fail.toString(),style: TextStyle(fontSize: 20,fontFamily: 'MyFont',color: Colors.white ),),
-                                        )
-                                    ),
-                                  ],),),
-                                Padding(padding: EdgeInsets.only(top:20,right: 50,left: 50),child: Container(
-                                  height: 1,
-                                  child: Divider(
-                                    thickness: 2,
-                                    color: purplecolor,
-                                  ),
-                                ),)
-                              ],)),
-                              ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount: data.length,
-                                  itemBuilder: (BuildContext context,int index){
-                                    return  new Padding(padding: EdgeInsets.all(20),child: Card(
-                                      child: InkWell(
-                                          child: Container(
-                                            child: Column(
-                                              children: <Widget>[
-                                                Container(
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Text(
-                                                        PersianDate.fromGregorianString(Convertdate(data[index]['TCCreationDate'])).toString(),
-                                                        style: TextStyle(
-                                                            fontSize: 18.0,
-                                                            fontWeight: FontWeight.bold,
-                                                            color: Colors.white,
-                                                            fontFamily: 'MyFont'
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  height: 50,
-                                                  color: themeColor,
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Padding(padding: EdgeInsets.only(top: 10),child:  Row(children: [
-                                                      Padding(padding: EdgeInsets.only(right: 10),
-                                                        child:
-                                                        Text(
-                                                          'پکیج',
-                                                          style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.white,
-                                                              fontFamily: 'MyFont'
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        ":",
-                                                        style: TextStyle(
-                                                            fontSize: 16.0,
-                                                            fontWeight: FontWeight.bold,
-                                                            color: Colors.white,
-                                                            fontFamily: 'MyFont'
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        data[index]['TCPackage'],
-                                                        style: TextStyle(
-                                                            fontSize: 16.0,
-                                                            fontWeight: FontWeight.bold,
-                                                            color: Colors.white,
-                                                            fontFamily: 'MyFont'
-                                                        ),
-                                                      ),
-                                                    ],
-                                                    ),),
-                                                    Padding(padding: EdgeInsets.only(top: 10),child:  Row(children: [
-                                                      Padding(padding: EdgeInsets.only(right: 10),
-                                                        child:
-                                                        Text(
-                                                          'وضعیت',
-                                                          style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.white,
-                                                              fontFamily: 'MyFont'
-                                                          ),
-                                                        ),
-
-                                                      ),
-                                                      Text(
-                                                        ":",
-                                                        style: TextStyle(
-                                                            fontSize: 16.0,
-                                                            fontWeight: FontWeight.bold,
-                                                            color: Colors.white,
-                                                            fontFamily: 'MyFont'
-                                                        ),
-                                                      ),
-                                                      Text(
-
-                                                        TransactionState(data[index]['TCState']),
-                                                        style: TextStyle(
-                                                            fontSize: 16.0,
-                                                            fontWeight: FontWeight.bold,
-                                                            color: StateColor,
-                                                            fontFamily: 'MyFont'
-                                                        ),
-                                                      ),
-                                                    ],
-                                                    ),),
-
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            height: 150,
-                                            color:purplecolor,
+                                      ),
+                                    ],),
+                                  Padding(padding: EdgeInsets.only(left: 30,right: 30,top: 30),child:  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: themeColor
                                           ),
-                                          onTap: () {
-                                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: TransactionDetails(widget.UIC,data[index]['_id']))),(Route<dynamic> route) => false);
-                                          }
+                                          child: Center(
+                                            child:  Text(data.length.toString(),style: TextStyle(fontSize: 20,fontFamily: 'MyFont',color: Colors.white ),),
+                                          )
                                       ),
-                                      semanticContainer: true,
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
+                                      Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: themeColor
+                                          ),
+                                          child: Center(
+                                            child:  Text(success.toString(),style: TextStyle(fontSize: 20,fontFamily: 'MyFont',color: Colors.white ),),
+                                          )
                                       ),
-                                      margin: EdgeInsets.all(10),
-                                      elevation: 5,
-                                      color: Colors.white,
+                                      Container(
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: themeColor
+                                          ),
+                                          child: Center(
+                                            child:  Text(fail.toString(),style: TextStyle(fontSize: 20,fontFamily: 'MyFont',color: Colors.white ),),
+                                          )
+                                      ),
+                                    ],),),
+                                  Padding(padding: EdgeInsets.only(top:20,right: 50,left: 50),child: Container(
+                                    height: 1,
+                                    child: Divider(
+                                      thickness: 2,
+                                      color: purplecolor,
+                                    ),
+                                  ),)
+                                ],)
+                                ),
+                                ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: data.length,
+                                    itemBuilder: (BuildContext context,int index){
+                                      return  new Padding(padding: EdgeInsets.all(20),child: Card(
+                                        child: InkWell(
+                                            child: Container(
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text(
+                                                          PersianDate.fromGregorianString(Convertdate(data[index]['TCCreationDate'])).toString(),
+                                                          style: TextStyle(
+                                                              fontSize: 18.0,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.white,
+                                                              fontFamily: 'MyFont'
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    height: 50,
+                                                    color: themeColor,
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Padding(padding: EdgeInsets.only(top: 10),child:  Row(children: [
+                                                        Padding(padding: EdgeInsets.only(right: 10),
+                                                          child:
+                                                          Text(
+                                                            'پکیج',
+                                                            style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.white,
+                                                                fontFamily: 'MyFont'
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          ":",
+                                                          style: TextStyle(
+                                                              fontSize: 16.0,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.white,
+                                                              fontFamily: 'MyFont'
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          data[index]['TCPackageName'],
+                                                          style: TextStyle(
+                                                              fontSize: 16.0,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.white,
+                                                              fontFamily: 'MyFont'
+                                                          ),
+                                                        ),
+                                                      ],
+                                                      ),),
+                                                      Padding(padding: EdgeInsets.only(top: 10),child:  Row(children: [
+                                                        Padding(padding: EdgeInsets.only(right: 10),
+                                                          child:
+                                                          Text(
+                                                            'وضعیت',
+                                                            style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.white,
+                                                                fontFamily: 'MyFont'
+                                                            ),
+                                                          ),
 
-                                    ),);
-                                  }
-                              ),
-                            ],
+                                                        ),
+                                                        Text(
+                                                          ":",
+                                                          style: TextStyle(
+                                                              fontSize: 16.0,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.white,
+                                                              fontFamily: 'MyFont'
+                                                          ),
+                                                        ),
+                                                        Text(
+
+                                                          TransactionState(data[index]['TCState']),
+                                                          style: TextStyle(
+                                                              fontSize: 16.0,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: StateColor,
+                                                              fontFamily: 'MyFont'
+                                                          ),
+                                                        ),
+                                                      ],
+                                                      ),),
+
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                              height: 150,
+                                              color:purplecolor,
+                                            ),
+                                            onTap: () {
+                                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: TransactionDetails(widget.UIC,data[index]['_id']))),(Route<dynamic> route) => false);
+                                            }
+                                        ),
+                                        semanticContainer: true,
+                                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20.0),
+                                        ),
+                                        margin: EdgeInsets.all(10),
+                                        elevation: 5,
+                                        color: Colors.white,
+
+                                      ),);
+                                    }
+                                ),
+                              ],
+                            ),
                           )
                       ),
 
@@ -407,7 +410,7 @@ class TransactionListState extends State<TransactionList>{
 
   GetTransactionList() async {
     FormData formData = FormData.fromMap({
-      "usernumber":"9337335323",
+      "usernumber":UserInfo.GetPhoneNumber(),
     });
     try {
       Response response = await Dio().post("http://jamq.ir:3000/Transaction/GetTransactionsById",data: formData);

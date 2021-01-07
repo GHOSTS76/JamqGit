@@ -9,10 +9,10 @@ import 'package:jamqpwa/LiveQuestion.dart';
 import 'package:jamqpwa/MainPage.dart';
 import 'package:jamqpwa/UserInfoClass.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
-
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:video_player/video_player.dart';
+
+
 
 
 class LiveMain extends StatefulWidget {
@@ -217,7 +217,7 @@ class LiveMainState extends State<LiveMain> {
   InitFunction() async{
     if(s == 0){
       ConnectSocket();
-      getPlayers(widget.MatchID);
+     // getPlayers(widget.MatchID);
       await GetCurseWords();
     }else{
 
@@ -240,19 +240,28 @@ class LiveMainState extends State<LiveMain> {
         EndMatchFunction(data)
     );
   }
+  UpdatePLayers(){
+      socket.on('UpdatePlayer', (data) async =>
+          upadatePlayers(data)
+    );
+  }
 
 
   QuestionReceivedFunction(data) async {
     socket.disconnect();
-
     var _ParsedData = await jsonDecode(data.toString());
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => new Directionality(textDirection: TextDirection.rtl,
-          child:
-          LiveQuestion(_ParsedData[0][0]['LMQ_Question'],_ParsedData[0][0]['LMQ_Choice1'],_ParsedData[0][0]['LMQ_Choice2'],_ParsedData[0][0]['LMQ_Choice3'],_ParsedData[0][0]['_id'],int.parse(_ParsedData[1].toString()),widget.MatchID,widget.playerId,widget.UIC)),),
+          child: LiveQuestion(_ParsedData[0][0]['LMQ_Question'],_ParsedData[0][0]['LMQ_Choice1'],_ParsedData[0][0]['LMQ_Choice2'],_ParsedData[0][0]['LMQ_Choice3'],_ParsedData[0][0]['_id'],int.parse(_ParsedData[1].toString()),widget.MatchID,widget.playerId,widget.UIC)),),
     );
 
+  }
+
+  upadatePlayers(PlayerCount){
+    setState(() {
+      Players = PlayerCount;
+    });
   }
 
   EndMatchFunction(data){
@@ -264,13 +273,14 @@ class LiveMainState extends State<LiveMain> {
   }
 
   checkForWin(mid) async {
+
     var Place ;
     FormData formData = FormData.fromMap({
       "LM_PlayerId":widget.playerId,
       "LM_MatchID": mid,
     });
     try {
-      Response response = await Dio().post("http://jamq.ir:3000/LiveMatch/GetLiveMatchByMId",data:formData);
+      Response response = await Dio().post("http://jamq.ir:3000/LiveMatch/DetermineResult",data:formData);
       if(response.data == 'Lost'){
         Alert(
           context: context,
@@ -321,6 +331,7 @@ class LiveMainState extends State<LiveMain> {
       print(e);
     }
   }
+
   QuestionAnalyzer(){
 
   }
@@ -329,21 +340,18 @@ class LiveMainState extends State<LiveMain> {
 
 
   }
-
-  getPlayers(mid) async {
-    FormData formData = FormData.fromMap({
-      "Id": mid,
-    });
-    try {
-    Response response = await Dio().post("http://jamq.ir:3000/LiveMatch/GetLiveMatchByMId",data:formData);
-    Players = response.data[0]['LmPlayersInGame'];
-    setState(() {
-
-    });
-    } catch (e) {
-      print(e);
-    }
-
-
-}
+//  getPlayers(mid) async {
+//    FormData formData = FormData.fromMap({
+//      "Id": mid,
+//    });
+//    try {
+//    Response response = await Dio().post("http://jamq.ir:3000/LiveMatch/GetLiveMatchByMId",data:formData);
+//    Players = response.data[0]['LmPlayersInGame'];
+//    setState(() {
+//
+//    });
+//    } catch (e) {
+//      print(e);
+//    }
+//}
 }

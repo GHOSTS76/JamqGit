@@ -7,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jamqpwa/LiveMain.dart';
 import 'package:jamqpwa/Profile.dart';
+import 'package:jamqpwa/Shop.dart';
+import 'package:jamqpwa/TournamentMain.dart';
+import 'package:jamqpwa/TournamentNextQuestion.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'DrawerLayout.dart';
 import 'SelectOpponent.dart';
@@ -36,6 +39,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
   var runsocket = 0;
   @override
   void initState() {
+
     UserInfo = new UserInfoClass(widget.UIC);
 
     super.initState();
@@ -61,7 +65,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
             if(constraints.maxWidth > 1080 || constraints.maxHeight > 1920) {
               return new  Stack(
                 children: <Widget>[
-                  new Container(
+                     new Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('assets/images/mainbackland.jpg'),
@@ -88,12 +92,12 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                                 children: [
                                                   Padding(
                                                     child:  InkWell(
-                                                      child: CircleAvatar(radius: 40,backgroundImage: NetworkImage(UserInfo.GetProiflePic()),),
+                                                      child: CircleAvatar(radius: 35, backgroundImage: NetworkImage(UserInfo.GetProiflePic()),),
                                                       onTap: (){
                                                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: profile(widget.UIC))),(Route<dynamic> route) => false);
                                                       },
                                                     ),
-                                                    padding: EdgeInsets.only(right: 10,bottom: 5),
+                                                    padding: EdgeInsets.only(right: 10),
                                                   ),
                                                   Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -103,17 +107,45 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                                           new Text(UserInfo.GetUserName(),style: TextStyle(fontSize: 20,color: Colors.purple,fontFamily: 'MyFont'),),
                                                         ],
                                                       ),
+
                                                       Row(
                                                         children: [
                                                           Stack(
                                                             children: <Widget>[
-                                                              Image.asset('assets/images/score.png',width:80,),
-                                                              Padding(padding: EdgeInsets.only(top: 3,right: 35),child:   Text(UserInfo.GetScoreAmount().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
-
+                                                              Image.asset('assets/images/blueticketmain.png',width:80,),
+                                                              Padding(padding: EdgeInsets.only(top: 2,right: 50),child:   Text(UserInfo.GetBlueTicket().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
                                                             ],
                                                           )
                                                         ],
                                                       ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Stack(
+                                                            children: <Widget>[
+                                                              Image.asset('assets/images/score.png',width:70,),
+                                                              Padding(padding: EdgeInsets.only(top: 2,right: 35),child:Text(UserInfo.GetScoreAmount().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Padding(
+                                                        padding: EdgeInsets.only(top: 10,left: 15),
+                                                        child:  Row(
+                                                          children: [
+                                                            Stack(
+                                                              children: <Widget>[
+                                                                Image.asset('assets/images/goldenticketmain.png',width:80,),
+                                                                Padding(padding: EdgeInsets.only(top: 2,right: 50),child:Text(UserInfo.GetGoldenTicket().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                 ],
@@ -129,7 +161,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                                             Stack(
                                                               children: <Widget>[
                                                                 Image.asset('assets/images/life.png',width:80,),
-                                                                Padding(padding: EdgeInsets.only(top: 3,right: 35),child:   Text(UserInfo.GetExtraLifeAmount().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
+                                                                Padding(padding: EdgeInsets.only(top: 5,right: 40),child:   Text(UserInfo.GetExtraLifeAmount().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
                                                               ],
                                                             )
                                                           ],
@@ -139,26 +171,22 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                                             Stack(
                                                               children: <Widget>[
                                                                 Image.asset('assets/images/coin.png',width:80,),
-                                                                Padding(padding: EdgeInsets.only(top: 3,right: 35),child:   Text(UserInfo.GetCoinAmount().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
+                                                                Padding(padding: EdgeInsets.only(top: 5,right: 40),child:   Text(UserInfo.GetCoinAmount().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
                                                               ],
                                                             )
                                                           ],
                                                         ),
+
                                                       ],
                                                     ),
-                                                    InkWell(
-                                                      child: Image.asset('assets/images/setting.png',height: 50,width: 50,),
-                                                      onTap: (){
-
-                                                      },
-                                                    )
+                                                    Image.asset('assets/images/setting.png',height: 45,width: 45,),
                                                   ],
                                                 ),
                                                 padding: EdgeInsets.only(bottom: 20,right:10),
                                               )
                                             ],
                                           ),
-                                          width: 440,
+                                          width: 400,
                                           height: 100,
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
@@ -167,7 +195,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                               )
                                           ),
                                         ),
-                                        padding: EdgeInsets.only(top:70),
+                                        padding: EdgeInsets.only(top:100),
                                       )
                                     ],
                                   )
@@ -199,6 +227,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                     color: Colors.white,
                                     child:   Image.asset('assets/images/tournementico.png',width: 40,height: 40,),
                                     onPressed: () {
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:TournamentMain(widget.UIC))),(Route<dynamic> route) => false);
 
                                     },
                                   ),
@@ -363,7 +392,13 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Padding(padding: EdgeInsets.only(bottom: 3,left: 25,right:60),child: Image.asset('assets/images/talentico.png',width:60 ,height: 60,),),
-                        Padding(padding: EdgeInsets.only(bottom: 5,left: 25,right:60),child: Image.asset('assets/images/shopico.png',width:60 ,height: 60,),),
+                        InkWell(
+                          child: Padding(padding: EdgeInsets.only(bottom: 5,left: 25,right:60),child: Image.asset('assets/images/shopico.png',width:60 ,height: 60,),),
+                          onTap: (){
+                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:Shop(widget.UIC))),(Route<dynamic> route) => false);
+
+                          },
+                        ),
                         Padding(padding: EdgeInsets.only(bottom: 5,left: 100),child: Image.asset('assets/images/groupgame.png',width:60 ,height: 60,),),
                       ],
                     ),
@@ -426,16 +461,45 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                                                             new Text(UserInfo.GetUserName(),style: TextStyle(fontSize: 20,color: Colors.purple,fontFamily: 'MyFont'),),
                                                           ],
                                                         ),
+
                                                         Row(
                                                           children: [
                                                             Stack(
                                                               children: <Widget>[
-                                                                Image.asset('assets/images/score.png',width:80,),
-                                                                Padding(padding: EdgeInsets.only(top: 6,right: 35),child:   Text(UserInfo.GetScoreAmount().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
+                                                                Image.asset('assets/images/blueticketmain.png',width:80,),
+                                                                Padding(padding: EdgeInsets.only(top: 2,right: 50),child:   Text(UserInfo.GetBlueTicket().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
                                                               ],
                                                             )
                                                           ],
                                                         ),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Stack(
+                                                              children: <Widget>[
+                                                                Image.asset('assets/images/score.png',width:70,),
+                                                                Padding(padding: EdgeInsets.only(top: 2,right: 35),child:Text(UserInfo.GetScoreAmount().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
+                                                       Padding(
+                                                         padding: EdgeInsets.only(top: 10,left: 15),
+                                                         child:  Row(
+                                                           children: [
+                                                             Stack(
+                                                               children: <Widget>[
+                                                                 Image.asset('assets/images/goldenticketmain.png',width:80,),
+                                                                 Padding(padding: EdgeInsets.only(top: 2,right: 50),child:Text(UserInfo.GetGoldenTicket().toString(),textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),)
+                                                               ],
+                                                             )
+                                                           ],
+                                                         ),
+                                                       )
                                                       ],
                                                     ),
                                                   ],
@@ -519,6 +583,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
 
                                       child:   Image.asset('assets/images/tournementico.png',width: 40,height: 40,),
                                       onPressed: () {
+                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:TournamentMain(widget.UIC))),(Route<dynamic> route) => false);
 
                                       },
                                     ),
@@ -676,9 +741,14 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
                       child:Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          Padding(padding: EdgeInsets.only(bottom: 5,left: 25),child: Image.asset('assets/images/talentico.png',width:30 ,height: 30,),),
-                          Padding(padding: EdgeInsets.only(bottom: 10,left: 25),child: Image.asset('assets/images/shopico.png',width:30 ,height: 30,),),
-                          Padding(padding: EdgeInsets.only(bottom: 4,left: 25),child: Image.asset('assets/images/groupgame.png',width:30 ,height: 30,),),
+                          Padding(padding: EdgeInsets.only(bottom: 3,right: 25),child: Image.asset('assets/images/talentico.png',width:30 ,height: 30,),),
+                          InkWell(
+                            child: Padding(padding: EdgeInsets.only(bottom:10,right:25),child: Image.asset('assets/images/shopico.png',width:30 ,height: 30,),),
+                            onTap: (){
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:Shop(widget.UIC))),(Route<dynamic> route) => false);
+                            },
+                          ),
+                          Padding(padding: EdgeInsets.only(bottom: 10,right: 25,left:20),child: Image.asset('assets/images/groupgame.png',width:30 ,height: 30,),),
                         ],
                       ),
                     ),
@@ -748,10 +818,10 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
       });
     }
   }
-
   SendLiveRequest(PId){
 
     socket.emit('JoinGame', [PId]);
+
   }
   Live(){
     socket.on('LiveState', (data) async =>
@@ -761,7 +831,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
     );
   }
   LivePage(data) async{
-    if(data =='NoLive'){
+      if(data =='NoLive'){
       Fluttertoast.showToast(
           msg: "مسابقه هنوز اماده نیست.",
           toastLength: Toast.LENGTH_SHORT,

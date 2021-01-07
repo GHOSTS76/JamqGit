@@ -827,6 +827,7 @@ class ProfileState extends State<profile>{
 
     GetUserInfo() async {
   print(UserInfo.GetPhoneNumber());
+  print('-------------------');
       FormData formData = FormData.fromMap({
         "usernumber":UserInfo.GetPhoneNumber(),
       });
@@ -835,8 +836,11 @@ class ProfileState extends State<profile>{
         if(response.data == '' || response.data == null){
           //log out user
        }else{
+          print('-------------------');
+
           print(response.data);
           userData = response.data;
+          print(response.data[0][0]['UserName']);
           if(response.data[0][0]['UserName']== 'کاربر مهمان'){
             name = 'تعیین نشده است';
              family = 'تعیین نشده است.';
@@ -846,6 +850,16 @@ class ProfileState extends State<profile>{
              gender = 'تعیین نشده است.';
             inputstate = true;
           }else{
+
+            print(response.data[0][0]['Name'].toString());
+            print(response.data[0][0]['Family'].toString());
+            print(response.data[0][0]['BankNumber'].toString());
+            print(response.data[0][0]['UserName'].toString());
+            print(response.data[0][0]['ProfilePicture'].toString());
+            print(response.data[0][0]['Email'].toString());
+            print(response.data[0][0]['BirthDate'].toString());
+            print(response.data[0][0]['Gender'].toString());
+
             inputstate = false;
              name   = response.data[0][0]['Name'].toString();
              NameInputController.text = 'نام : '+name;
@@ -855,16 +869,14 @@ class ProfileState extends State<profile>{
             BankNumberController.text = ' شماره حساب :'+banknumber;
 
             UserNameController.text = ' نام کاربری  :'+response.data[0][0]['UserName'].toString();
-            picdef = NetworkImage( response.data[0][0]['ProfilePicture'].toString());
+            picdef = NetworkImage(response.data[0][0]['ProfilePicture'].toString());
             email = response.data[0][0]['Email'].toString();
             EmailController.text = ' ایمیل : '+email ;
             birthdate = response.data[0][0]['BirthDate'].toString();
             BirthDayController.text = ' تاریخ تولد : '+Convertdate(birthdate).toString();
-            print('hereitcomes');
             gender = response.data[0][0]['Gender'];
             if(gender){
               GenderController.text =  ' جنسیت : آقا';
-
             }else{
               GenderController.text =  ' جنسیت : خانم';
             }
@@ -912,6 +924,8 @@ class ProfileState extends State<profile>{
     }
 
     UpdateInformation() async {
+  print('Sfkszhfdzjvnxdoijvxdvjix');
+  print(birthdate);
   var Gen;
   if(BirthDayController.text == 'آقا'){
     Gen = true;
@@ -927,10 +941,10 @@ class ProfileState extends State<profile>{
         "ProfilePic":jsonimg64,
         "Email":EmailController.text,
         "Gender":Gen,
-        "BirthDate":birthdate,
+        "BirthDate":BirthDayController.text,
       });
       try {
-        Response response = await Dio().post("http://jamq.ir:3000/Mainuser/UpdateProfile",data:formData);
+          Response response = await Dio().post("http://jamq.ir:3000/Mainuser/UpdateProfile",data:formData);
         print(response.data);
         if(response.data == '' || response.data == null){
           //log out user

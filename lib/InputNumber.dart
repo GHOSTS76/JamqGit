@@ -161,7 +161,13 @@ class InputNumberState extends State<InputNumber>{
                         child:Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            new Text('شروع بازی',style:TextStyle(fontSize: 20,color: Colors.white,fontFamily: 'MyFont'),)
+                            InkWell(
+                              child:new Text('شروع بازی',style:TextStyle(fontSize: 20,color: Colors.white,fontFamily: 'MyFont'),),
+                              onTap: (){
+
+                              },
+                            )
+
                           ],
                         ),
                       ),

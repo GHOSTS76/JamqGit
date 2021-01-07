@@ -42,6 +42,7 @@ String GetId(){
   String GetIsOnline(){
     return data[0][0]['IsOnline'].toString();
   }
+
   String GetCoinAmount(){
     return data[1][0]['CAmount'].toString();
   }
@@ -50,6 +51,14 @@ String GetId(){
    }
    String GetScoreAmount(){
      return data[3][0]['SCUserScore'].toString();
+
+   }  String GetWalletAmount(){
+     return data[4][0]['WAmount'].toString();
+
+   }  String GetGoldenTicket(){
+     return data[5][0]['GltAmount'].toString();
+   }String GetBlueTicket(){
+     return data[6][0]['BltAmount'].toString();
    }
 }
 

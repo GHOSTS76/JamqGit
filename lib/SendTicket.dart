@@ -29,7 +29,7 @@ class SendTicketState extends State<SendTicket>{
   var themeColor = Color.fromRGBO(19, 2, 102, 1);
   var purplecolor = Color.fromRGBO(80, 0, 131,1);
   final TitleController = TextEditingController();
-  final Textcontroller = TextEditingController();
+    final Textcontroller = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState

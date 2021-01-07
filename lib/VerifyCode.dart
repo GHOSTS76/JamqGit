@@ -189,12 +189,12 @@ class verify_numberState extends State<VerifyCode> with TickerProviderStateMixin
                             ),
                           ),),),
                           Padding(padding: EdgeInsets.only(top: 10),child:  Center(
-                            child: new Countdown(
-                              animation: new StepTween(
-                                begin: kStartValue,
-                                end: 0,
-                              ).animate(_controller),
-                            ),
+                              child: new Countdown(
+                                animation: new StepTween(
+                                  begin: kStartValue,
+                                  end: 0,
+                                ).animate(_controller),
+                              ),
                           ),)
                         ],
                       )),
@@ -234,6 +234,7 @@ class verify_numberState extends State<VerifyCode> with TickerProviderStateMixin
   RegisterUser(Number) async {
     FormData formData = FormData.fromMap({
       "PhoneNumber":Number,
+      "invitedby":'null',
     });
     try {
       Response response = await Dio().post("http://jamq.ir:3000/Register/RegisterUser",data:formData);
@@ -241,7 +242,6 @@ class verify_numberState extends State<VerifyCode> with TickerProviderStateMixin
         UserInfo = new UserInfoClass(response.data);
         GetUserInfo(Number);
       }
-
 
     } catch (e) {
       print(e);
