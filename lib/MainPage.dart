@@ -831,7 +831,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
     );
   }
   LivePage(data) async{
-      if(data =='NoLive'){SubmitId
+      if(data =='NoLive'){
       Fluttertoast.showToast(
           msg: "مسابقه هنوز اماده نیست.",
           toastLength: Toast.LENGTH_SHORT,

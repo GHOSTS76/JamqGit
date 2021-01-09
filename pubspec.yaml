@@ -203,6 +203,7 @@ flutter:
       - assets/images/failico.png
       - assets/images/trprizeico.png
       - assets/images/goldentico.png
+      - assets/images/blueico.png
 
       - assets/anims/qssearch.json
 

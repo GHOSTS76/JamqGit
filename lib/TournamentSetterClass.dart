@@ -22,7 +22,7 @@ class TournamentSetter{
 
   }
   String GetSpecialLeageData(Type) {
-    if (Type == 'id') {
+    if (Type == 'Id') {
      return SpecialLeage[0]['_id'];
     } else if (Type == 'Title') {
       return SpecialLeage[0]['TrTitle'];
@@ -40,6 +40,8 @@ class TournamentSetter{
       return SpecialLeage[0]['TrIcon'];
     }else if(Type == 'Category'){
       return SpecialLeage[0]['TrCategoryName'];
+    }else if(Type == 'Text'){
+      return SpecialLeage[0]['TrText'];
     }
   }
 
@@ -64,9 +66,12 @@ class TournamentSetter{
 
     }else if(Type == 'Category'){
       return SpeedLeage[0]['TrCategoryName'];
+    }else if(Type == 'Text'){
+      return SpeedLeage[0]['TrText'];
     }
   }
   String GetTodayOne(Type) {
+
     if (Type == 'id') {
       return TodayOne[0]['_id'];
     } else if (Type == 'Title') {
@@ -86,6 +91,8 @@ class TournamentSetter{
 
     }else if(Type == 'Category'){
       return TodayOne[0]['TrCategoryName'];
+    }else if(Type == 'Text'){
+      return TodayOne[0]['TrText'];
     }
   }
   String GetTodayTwo(Type) {
@@ -108,6 +115,58 @@ class TournamentSetter{
 
     }else if(Type == 'Category'){
       return TodayTwo[0]['TrCategoryName'];
+
+    }else if(Type == 'Text'){
+      return TodayTwo[0]['TrText'];
+    }
+  }
+  String GetTomorrowOne(Type) {
+    if (Type == 'id') {
+      return TomorowOne[0]['_id'];
+    } else if (Type == 'Title') {
+      return TomorowOne[0]['TrTitle'];
+
+    } else if (Type == 'PlayersInGame') {
+      return TomorowOne[0]['TrPlayersInGame'].toString();
+
+    } else if (Type == 'Prize') {
+      return TomorowOne[0]['TrPrize'];
+
+    } else if (Type == 'Time') {
+      return TomorowOne[0]['TrStartTime'];
+
+    } else if (Type == 'Icon') {
+      return TomorowOne[0]['TrIcon'];
+
+    }else if(Type == 'Category'){
+      return TomorowOne[0]['TrCategoryName'];
+
+    }else if(Type == 'Text'){
+      return TomorowOne[0]['TrText'];
+    }
+  }
+  String GetTomorrowTwo(Type) {
+    if (Type == 'id') {
+      return TomorowTwo[0]['_id'];
+    } else if (Type == 'Title') {
+      return TomorowTwo[0]['TrTitle'];
+
+    } else if (Type == 'PlayersInGame') {
+      return TomorowTwo[0]['TrPlayersInGame'].toString();
+
+    } else if (Type == 'Prize') {
+      return TomorowTwo[0]['TrPrize'];
+
+    } else if (Type == 'Time') {
+      return TomorowTwo[0]['TrStartTime'];
+
+    } else if (Type == 'Icon') {
+      return TomorowTwo[0]['TrIcon'];
+
+    }else if(Type == 'Category'){
+      return TomorowTwo[0]['TrCategoryName'];
+    }else if(Type == 'Text'){
+      return TomorowTwo[0]['TrText'];
     }
   }
 }

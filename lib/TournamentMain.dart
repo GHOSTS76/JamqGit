@@ -3,6 +3,7 @@ import 'package:confetti/confetti.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/countdown_controller.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
@@ -11,11 +12,14 @@ import 'package:jamqpwa/TournamentSetterClass.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'MainPage.dart';
+import 'Shop.dart';
+import 'UserInfoClass.dart';
 
 class TournamentMain extends StatefulWidget{
   var UIC;
   TournamentMain(this.UIC);
   TournamentMain.none();
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -26,7 +30,7 @@ class TournamentMain extends StatefulWidget{
 class TournamentMainState extends State<TournamentMain>{
   var   selectedColor = Color.fromRGBO(80, 0, 131, 1);
   TournamentSetter TournamentData;
-
+  UserInfoClass UserInfo ;
   Future loadfuture;
   var   UnselectedColor = Colors.white;
   CountdownTimerController controller;
@@ -39,9 +43,12 @@ class TournamentMainState extends State<TournamentMain>{
     print('EndTime');
     print(endTime);
     print(DateTime.now().toString());
-
+    UserInfo = new UserInfoClass(widget.UIC);
     controller = CountdownTimerController(endTime: endTime, onEnd: (){print('Ended'); });
     loadfuture = GetTournaments();
+
+
+
   }
   @override
   Widget build(BuildContext context) {
@@ -261,103 +268,7 @@ class TournamentMainState extends State<TournamentMain>{
                                           ),
                                         ),
                                         onTap: (){
-                                          Alert(
-                                            context: context,
-                                            image: CircleAvatar(
-                                              backgroundImage:  AssetImage('assets/images/profback.png'),
-                                              radius: 70,
-                                            ),
-                                            title: "لیگ ویژه",style: AlertStyle(
-                                            animationType: AnimationType.fromTop,
-                                            isCloseButton: true,
-                                            isOverlayTapDismiss: true,
-                                            descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
-                                            animationDuration: Duration(milliseconds: 400),
-                                            alertBorder: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(0.0),
-                                              side: BorderSide(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            titleStyle: TextStyle(
-                                            ),
-                                          ),
-                                            desc: 'این یک متن تستی برای تست متن تورنمنت میباشد و فاقد هرگونه ارزش مادی و معنوی دیگری میباشد',
-                                            content: Column(
-                                              children: [
-                                                Card(
-                                                  semanticContainer: true,
-                                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(45),
-                                                  ),
-                                                  margin: EdgeInsets.all(10),
-                                                  elevation: 10,
-                                                  child:Container(
-                                                    width: P_width,
-                                                    height: 60,
-                                                    color: Colors.white60,
-                                                    child: Center(
-                                                        child:
-                                                        Padding(
-                                                          padding: EdgeInsets.only(left: 10,right: 10),
-                                                          child:   Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: <Widget>[
-                                                              Padding(padding: EdgeInsets.only(right: 5),child:  Text(' تومان '+'500000' ,style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),),
-
-                                                              Padding(padding: EdgeInsets.only(right: 5),child:  Text('جایزه امروز ',style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),),
-
-                                                            ],
-                                                          ),
-                                                        )
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(padding: EdgeInsets.only(top: 10),child:Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text('ورودی',style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
-                                                    Stack(
-                                                      children: [
-
-                                                        Image.asset('assets/images/goldentico.png',width: 50,height:50,),
-                                                        Padding(
-                                                          child: Text('1',style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
-                                                          padding: EdgeInsets.only(left: 22,top: 12),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Text('بلیط طلایی',style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
-                                                  ],
-                                                ),)
-                                              ],
-                                            ),
-                                            buttons: [
-                                              DialogButton(
-                                                child: Text(
-                                                  "جدول برندگان",
-                                                  style: TextStyle(color: Colors.white, fontSize: 20),
-                                                ),
-                                                onPressed:(){
-                                                  Navigator.pop(context);
-                                                },
-                                                color: Colors.cyan,
-                                                radius: BorderRadius.circular(10),
-                                              ),
-                                              DialogButton(
-                                                child: Text(
-                                                  "شروع بازی",
-                                                  style: TextStyle(color: Colors.white, fontSize: 20),
-                                                ),
-                                                onPressed:(){
-                                                  Navigator.pop(context);
-                                                },
-                                                color: Green,
-                                                radius: BorderRadius.circular(10),
-                                              ),
-                                            ],
-                                          ).show();
+                                          StartMatch(P_width,Green,TournamentData.GetSpecialLeageData('Title'),TournamentData.GetSpecialLeageData('Icon'),TournamentData.GetSpecialLeageData('TrText'),TournamentData.GetSpecialLeageData('Prize'),'Gold',TournamentData.GetSpecialLeageData('Id'));
                                         },
                                       )
                                   ),
@@ -521,13 +432,18 @@ class TournamentMainState extends State<TournamentMain>{
                                         height: 60,
                                         color: Green,
                                         child: Center(
-                                            child:
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Padding(padding: EdgeInsets.only(right: 5),child:  Text('شروع بازی',style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20,fontWeight: FontWeight.bold),),),
+                                            child:InkWell(
+                                              child:Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Padding(padding: EdgeInsets.only(right: 5),child:  Text('شروع بازی',style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20,fontWeight: FontWeight.bold),),),
 
-                                              ],
+                                                ],
+                                              ),
+                                              onTap: (){
+                                                StartMatch(P_width,Green,TournamentData.GetSpeedLeageData('Title'),TournamentData.GetSpeedLeageData('Icon'),TournamentData.GetSpeedLeageData('TrText'),TournamentData.GetSpeedLeageData('Prize'),'Gold',TournamentData.GetSpeedLeageData('Id'));
+
+                                              },
                                             )
                                         ),
                                       ),
@@ -619,7 +535,7 @@ class TournamentMainState extends State<TournamentMain>{
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Padding(padding: EdgeInsets.only(right: 5),child:  Text('بازی امروز',style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20,fontWeight: FontWeight.bold),),),
-                                                Padding(padding: EdgeInsets.only(right: 30),child:  Text('1,000,000'+' تومان ',style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20,fontWeight: FontWeight.bold),),),
+                                                Padding(padding: EdgeInsets.only(right: 30),child:  Text(SetTodayPrize(int.parse(TournamentData.GetTodayOne('Prize')),int.parse(TournamentData.GetTodayTwo('Prize'))).toString()+' تومان ',style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20,fontWeight: FontWeight.bold),),),
                                               ],
                                             )
                                           ],
@@ -638,132 +554,144 @@ class TournamentMainState extends State<TournamentMain>{
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                Card(
-                                                  semanticContainer: true,
-                                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(25),
-                                                  ),
-                                                  margin: EdgeInsets.all(10),
-                                                  elevation: 10,
-                                                  child:Container(
-                                                      width: 200,
-                                                      height:150,
-                                                      color: Colors.white,
-                                                      child:Column(
-                                                        children: [
-                                                          Stack(
-                                                            children: [
-                                                              Align(
-                                                                child: Padding(
-                                                                  child: Image.asset('assets/images/trtournament.png'),
-                                                                  padding: EdgeInsets.only(left: 20,right: 20,top: 5),
-                                                                ),
-                                                                alignment: Alignment.topCenter,
-                                                              ),
-                                                              Align(
-                                                                child: Padding(
-                                                                  child: Image.asset('assets/images/artico.png',height: 50,width: 50,),
-                                                                  padding: EdgeInsets.only(right: 25 ,top: 15),
-                                                                ),
-                                                                alignment: Alignment.topRight,
-                                                              ),
-                                                              Align(
-                                                                child: Padding(
-                                                                  child: Text('هنر',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
-                                                                  padding: EdgeInsets.only(right:30,top: 25),
-                                                                ),
-                                                                alignment: Alignment.topCenter,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                            children: [
-                                                              Image.asset('assets/images/trprizeico.png',height: 30,width: 30,),
-                                                              Padding(
-                                                                child: Text('جوایز : ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
-                                                                padding: EdgeInsets.only(right: 5),
-                                                              )
+                                               InkWell(
+                                                 child:  Card(
+                                                   semanticContainer: true,
+                                                   clipBehavior: Clip.antiAliasWithSaveLayer,
+                                                   shape: RoundedRectangleBorder(
+                                                     borderRadius: BorderRadius.circular(25),
+                                                   ),
+                                                   margin: EdgeInsets.all(10),
+                                                   elevation: 10,
+                                                   child:Container(
+                                                       width: 200,
+                                                       height:150,
+                                                       color: Colors.white,
+                                                       child:Column(
+                                                         children: [
+                                                           Stack(
+                                                             children: [
+                                                               Align(
+                                                                 child: Padding(
+                                                                   child: Image.asset('assets/images/trtournament.png'),
+                                                                   padding: EdgeInsets.only(left: 20,right: 20,top: 5),
+                                                                 ),
+                                                                 alignment: Alignment.topCenter,
+                                                               ),
+                                                               Align(
+                                                                 child: Padding(
+                                                                   child: Image.network(TournamentData.GetTodayOne('Icon'),height: 50,width: 50,),
+                                                                   padding: EdgeInsets.only(right: 25 ,top: 15),
+                                                                 ),
+                                                                 alignment: Alignment.topRight,
+                                                               ),
+                                                               Align(
+                                                                 child: Padding(
+                                                                   child: Text(TournamentData.GetTodayOne('Title'),style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 15,fontWeight: FontWeight.bold),),
+                                                                   padding: EdgeInsets.only(right:35,top: 25),
+                                                                 ),
+                                                                 alignment: Alignment.topCenter,
+                                                               ),
+                                                             ],
+                                                           ),
+                                                           Row(
+                                                             mainAxisAlignment: MainAxisAlignment.center,
+                                                             children: [
+                                                               Image.asset('assets/images/trprizeico.png',height: 30,width: 30,),
+                                                               Padding(
+                                                                 child: Text('جوایز : ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
+                                                                 padding: EdgeInsets.only(right: 5),
+                                                               )
 
-                                                            ],
-                                                          ),
-                                                          Padding(
-                                                            child:   Row(
-                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                              children: [
-                                                                Text('1000000'+'   تومان ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
-                                                              ],
-                                                            ),
-                                                            padding: EdgeInsets.only(top: 10),
-                                                          )
-                                                        ],
-                                                      )
-                                                  ),
-                                                ),
-                                                Card(
-                                                  semanticContainer: true,
-                                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(25),
-                                                  ),
-                                                  margin: EdgeInsets.all(10),
-                                                  elevation: 10,
-                                                  child:Container(
-                                                      width: 200,
-                                                      height:150,
-                                                      color: Colors.white,
-                                                      child:Column(
-                                                        children: [
-                                                          Stack(
-                                                            children: [
-                                                              Align(
-                                                                child: Padding(
-                                                                  child: Image.asset('assets/images/trtournament.png'),
-                                                                  padding: EdgeInsets.only(left: 20,right: 20,top: 5),
-                                                                ),
-                                                                alignment: Alignment.topCenter,
-                                                              ),
-                                                              Align(
-                                                                child: Padding(
-                                                                  child: Image.asset('assets/images/artico.png',height: 50,width: 50,),
-                                                                  padding: EdgeInsets.only(right: 25 ,top: 15),
-                                                                ),
-                                                                alignment: Alignment.topRight,
-                                                              ),
-                                                              Align(
-                                                                child: Padding(
-                                                                  child: Text('هنر',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
-                                                                  padding: EdgeInsets.only(right:30,top: 25),
-                                                                ),
-                                                                alignment: Alignment.topCenter,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                            children: [
-                                                              Image.asset('assets/images/trprizeico.png',height: 30,width: 30,),
-                                                              Padding(
-                                                                child: Text('جوایز : ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
-                                                                padding: EdgeInsets.only(right: 5),
-                                                              )
+                                                             ],
+                                                           ),
+                                                           Padding(
+                                                             child:   Row(
+                                                               mainAxisAlignment: MainAxisAlignment.center,
+                                                               children: [
+                                                                 Text(TournamentData.GetTodayOne('Prize')+'   تومان ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
+                                                               ],
+                                                             ),
+                                                             padding: EdgeInsets.only(top: 10),
+                                                           )
+                                                         ],
+                                                       )
+                                                   ),
+                                                 ),
+                                                 onTap: (){
+                                                   StartMatch(P_width,Green,TournamentData.GetTodayOne('Title'),TournamentData.GetTodayOne('Icon'),TournamentData.GetTodayOne('TrText'),TournamentData.GetTodayOne('Prize'),'Blue',TournamentData.GetTodayOne('Id'));
 
-                                                            ],
-                                                          ),
-                                                          Padding(
-                                                            child:   Row(
-                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                              children: [
-                                                                Text('1000000'+'   تومان ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
-                                                              ],
-                                                            ),
-                                                            padding: EdgeInsets.only(top: 10),
-                                                          )
-                                                        ],
-                                                      )
-                                                  ),
-                                                ),
+                                                 },
+                                               ),
+                                               InkWell(
+                                                 child:  Card(
+                                                   semanticContainer: true,
+                                                   clipBehavior: Clip.antiAliasWithSaveLayer,
+                                                   shape: RoundedRectangleBorder(
+                                                     borderRadius: BorderRadius.circular(25),
+                                                   ),
+                                                   margin: EdgeInsets.all(10),
+                                                   elevation: 10,
+                                                   child:Container(
+                                                       width: 200,
+                                                       height:150,
+                                                       color: Colors.white,
+                                                       child:Column(
+                                                         children: [
+                                                           Stack(
+                                                             children: [
+                                                               Align(
+                                                                 child: Padding(
+                                                                   child: Image.asset('assets/images/trtournament.png'),
+                                                                   padding: EdgeInsets.only(left: 20,right: 20,top: 5),
+                                                                 ),
+                                                                 alignment: Alignment.topCenter,
+                                                               ),
+                                                               Align(
+                                                                 child: Padding(
+                                                                   child: Image.network(TournamentData.GetTodayTwo('Icon'),height: 50,width: 50,),
+                                                                   padding: EdgeInsets.only(right: 25 ,top: 15),
+                                                                 ),
+                                                                 alignment: Alignment.topRight,
+                                                               ),
+                                                               Align(
+                                                                 child: Padding(
+                                                                   child: Text(TournamentData.GetTodayTwo('Title'),style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 15,fontWeight: FontWeight.bold),),
+                                                                   padding: EdgeInsets.only(right:35,top: 25),
+                                                                 ),
+                                                                 alignment: Alignment.topCenter,
+                                                               ),
+                                                             ],
+                                                           ),
+                                                           Row(
+                                                             mainAxisAlignment: MainAxisAlignment.center,
+                                                             children: [
+                                                               Image.asset('assets/images/trprizeico.png',height: 30,width: 30,),
+                                                               Padding(
+                                                                 child: Text('جوایز : ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
+                                                                 padding: EdgeInsets.only(right: 5),
+                                                               )
+
+                                                             ],
+                                                           ),
+                                                           Padding(
+                                                             child:   Row(
+                                                               mainAxisAlignment: MainAxisAlignment.center,
+                                                               children: [
+                                                                 Text(TournamentData.GetTodayTwo('Prize')+'   تومان ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
+                                                               ],
+                                                             ),
+                                                             padding: EdgeInsets.only(top: 10),
+                                                           )
+                                                         ],
+                                                       )
+                                                   ),
+                                                 ),
+                                                 onTap: (){
+                                                   StartMatch(P_width,Green,TournamentData.GetTodayTwo('Title'),TournamentData.GetTodayTwo('Icon'),TournamentData.GetTodayTwo('TrText'),TournamentData.GetTodayTwo('Prize'),'Blue',TournamentData.GetTodayTwo('Id'));
+                                                 },
+                                               )
+
                                               ],
                                             )
                                           ],
@@ -782,38 +710,14 @@ class TournamentMainState extends State<TournamentMain>{
                                 ),
                                 Center(
                                     child: Padding(
-                                        padding: EdgeInsets.only(top: 30),
+                                        padding: EdgeInsets.only(top: 80),
                                         child: Column(
                                           children: [
-                                            Card(
-                                              semanticContainer: true,
-                                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(45),
-                                              ),
-                                              margin: EdgeInsets.all(10),
-                                              elevation: 10,
-                                              child:Container(
-                                                width: 180,
-                                                height: 35,
-                                                color: Colors.white,
-                                                child: Center(
-                                                    child:
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                      children: <Widget>[
-                                                        Padding(padding: EdgeInsets.only(right: 5),child:  Text('4  :  23  :  13',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),),
-                                                        Image.asset('assets/images/whitetimer.png',height: 25,width: 25,color: themeColor,),
-                                                      ],
-                                                    )
-                                                ),
-                                              ),
-                                            ),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Padding(padding: EdgeInsets.only(right: 5),child:  Text('بازی فردا',style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20,fontWeight: FontWeight.bold),),),
-                                                Padding(padding: EdgeInsets.only(right: 30),child:  Text('1,000,000'+' تومان ',style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20,fontWeight: FontWeight.bold),),),
+                                                Padding(padding: EdgeInsets.only(right: 30),child:  Text(SetTodayPrize(int.parse(TournamentData.GetTomorrowOne('Prize')),int.parse(TournamentData.GetTomorrowTwo('Prize'))).toString()+' تومان ',style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20,fontWeight: FontWeight.bold),),),
                                               ],
                                             )
                                           ],
@@ -857,15 +761,15 @@ class TournamentMainState extends State<TournamentMain>{
                                                               ),
                                                               Align(
                                                                 child: Padding(
-                                                                  child: Image.asset('assets/images/artico.png',height: 50,width: 50,),
+                                                                  child:  Image.network(TournamentData.GetTomorrowOne('Icon'),height: 50,width: 50,),
                                                                   padding: EdgeInsets.only(right: 25 ,top: 15),
                                                                 ),
                                                                 alignment: Alignment.topRight,
                                                               ),
                                                               Align(
                                                                 child: Padding(
-                                                                  child: Text('هنر',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
-                                                                  padding: EdgeInsets.only(right:30,top: 25),
+                                                                  child: Text(TournamentData.GetTomorrowOne('Title'),style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 15,fontWeight: FontWeight.bold),),
+                                                                  padding: EdgeInsets.only(right:35,top: 25),
                                                                 ),
                                                                 alignment: Alignment.topCenter,
                                                               ),
@@ -886,7 +790,7 @@ class TournamentMainState extends State<TournamentMain>{
                                                             child:   Row(
                                                               mainAxisAlignment: MainAxisAlignment.center,
                                                               children: [
-                                                                Text('1000000'+'   تومان ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
+                                                                  Text(TournamentData.GetTomorrowOne('Prize')+'   تومان ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
                                                               ],
                                                             ),
                                                             padding: EdgeInsets.only(top: 10),
@@ -920,15 +824,15 @@ class TournamentMainState extends State<TournamentMain>{
                                                               ),
                                                               Align(
                                                                 child: Padding(
-                                                                  child: Image.asset('assets/images/artico.png',height: 50,width: 50,),
+                                                                  child:  Image.network(TournamentData.GetTomorrowTwo('Icon'),height: 50,width: 50,),
                                                                   padding: EdgeInsets.only(right: 25 ,top: 15),
                                                                 ),
                                                                 alignment: Alignment.topRight,
                                                               ),
                                                               Align(
                                                                 child: Padding(
-                                                                  child: Text('هنر',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
-                                                                  padding: EdgeInsets.only(right:30,top: 25),
+                                                                  child: Text(TournamentData.GetTomorrowTwo('Title'),style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 15,fontWeight: FontWeight.bold),),
+                                                                  padding: EdgeInsets.only(right:35,top: 25),
                                                                 ),
                                                                 alignment: Alignment.topCenter,
                                                               ),
@@ -949,7 +853,7 @@ class TournamentMainState extends State<TournamentMain>{
                                                             child:   Row(
                                                               mainAxisAlignment: MainAxisAlignment.center,
                                                               children: [
-                                                                Text('1000000'+'   تومان ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
+                                                                Text(TournamentData.GetTomorrowTwo('Prize')+'   تومان ',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontSize: 18,fontWeight: FontWeight.bold),),
                                                               ],
                                                             ),
                                                             padding: EdgeInsets.only(top: 10),
@@ -1038,6 +942,9 @@ class TournamentMainState extends State<TournamentMain>{
         return false;
       }else {
         TournamentData = new TournamentSetter(response.data);
+        print(TournamentData.GetTodayOne('Prize'));
+        print('-------------------');
+        print(TournamentData.GetTodayTwo('Prize'));
       }
       return true;
     } catch (e) {
@@ -1049,4 +956,186 @@ class TournamentMainState extends State<TournamentMain>{
 
   }
 
+  SetTodayPrize(Prize1,Prize2){
+    var result;
+    result =  Prize1 + Prize2;
+    return result;
+  }
+
+  StartMatch(width,Green,Title,Icon,DescText,Prize,Type,TournamentId){
+    var Gold='assets/images/goldentico.png';
+    var Blue = 'assets/images/blueico.png';
+    var Ticket = '';
+    var TicketNo;
+    var TicketTextColor;
+    DescText = 'FakeData';
+    if(Type == 'Blue'){
+      Ticket = Blue;
+      TicketNo = 'بلیط آبی';
+      TicketTextColor = Colors.white;
+    }else if(Type == 'Gold'){
+      Ticket = Gold;
+      TicketNo = 'بلیط طلایی';
+      TicketTextColor = Colors.black;
+    }
+    Alert(
+      context: context,
+      image: Container(
+        alignment: Alignment.center,
+        child: Container(
+          width: 100.0,
+          height: 100.0,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
+              image: DecorationImage(
+                  image: NetworkImage(
+                    Icon,
+                  ), )
+          ),
+        ),
+      ),
+      title:  Title,style: AlertStyle(
+      animationType: AnimationType.fromTop,
+      isCloseButton: true,
+      isOverlayTapDismiss: true,
+      descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+      animationDuration: Duration(milliseconds: 400),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0.0),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: TextStyle(
+      ),
+    ),
+      desc: DescText,
+      content: Column(
+        children: [
+          Card(
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(45),
+            ),
+            margin: EdgeInsets.all(10),
+            elevation: 10,
+            child:Container(
+              width: width,
+              height: 60,
+              color: Colors.white60,
+              child: Center(
+                  child:
+                  Padding(
+                    padding: EdgeInsets.only(left: 10,right: 10),
+                    child:   Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(padding: EdgeInsets.only(right: 5),child:  Text(' تومان '+Prize,style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),),
+
+                        Padding(padding: EdgeInsets.only(right: 5),child:  Text('جایزه امروز ',style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),),
+
+                      ],
+                    ),
+                  )
+              ),
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(top: 10),child:Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('ورودی',style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
+              Stack(
+                children: [
+
+                  Image.asset(Ticket,width: 50,height:50,),
+                  Padding(
+                    child: Text('1',style: TextStyle(color:TicketTextColor,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
+                    padding: EdgeInsets.only(left: 22,top: 12),
+                  )
+                ],
+              ),
+              Text(TicketNo,style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
+            ],
+          ),)
+        ],
+      ),
+      buttons: [
+        DialogButton(
+          child: Text(
+            "جدول برندگان",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed:(){
+            Navigator.pop(context);
+          },
+          color: Colors.cyan,
+          radius: BorderRadius.circular(10),
+        ),
+        DialogButton(
+          child: Text(
+            "شروع بازی",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed:(){
+            JoinTournament(UserInfo.GetPhoneNumber(),TournamentId);
+          },
+          color: Green,
+          radius: BorderRadius.circular(10),
+        ),
+      ],
+    ).show();
+  }
+
+  JoinTournament(Pid,TournamentId) async {
+    print(Pid);
+    print(TournamentId);
+    FormData formData = FormData.fromMap({
+      "PlayerID":Pid,
+      "Tid":TournamentId,
+    });
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/Tournament/JoinTournament",data: formData);
+      print(response.data);
+      if(response.data== 'NotEnoghTicket'){
+        Alert(
+          context: context,
+          type: AlertType.info,
+          title: "خطا",
+          desc:  'برای ورود به بلیط  نیاز داری! بلیط  رو میتونی از فروشگاه بدست بیاری',
+          buttons: [
+            DialogButton(
+              child: Text(
+              "بستن",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ), 
+              onPressed: () =>  Navigator.pop(context),
+              color: Colors.brown, 
+              radius: BorderRadius.circular(5.0),
+          ),
+            DialogButton(
+              child: Text(
+                "فروشگاه",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed:(){
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:Shop(widget.UIC))),(Route<dynamic> route) => false);
+              }
+              ,
+              color: Colors.green,
+              radius: BorderRadius.circular(5.0),
+            ),
+          ],
+        ).show();
+      }else if(response.data =='Joind') {
+        print('Player Join Game');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  WinnersList(){
+
+  }
 }
