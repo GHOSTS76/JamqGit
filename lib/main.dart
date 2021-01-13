@@ -23,6 +23,7 @@ import 'SendTicket.dart';
 import 'Shop.dart';
 import 'SplashScreen.dart';
 import 'TicketDetails.dart';
+import 'TournamentQuestion.dart';
 import 'VerifyCode.dart';
 import 'Ticket.dart';
 
@@ -53,6 +54,7 @@ class JamQ extends StatelessWidget {
           "/OtherApps": (context) => new Directionality(textDirection: TextDirection.rtl, child: TestClass()),
           "/SendTicket": (context) => new Directionality(textDirection: TextDirection.rtl, child: SendTicket.none()),
           "/Trnextqs": (context) => new Directionality(textDirection: TextDirection.rtl, child: Tournament.none()),
+          "/TournamentQuestion": (context) => new Directionality(textDirection: TextDirection.rtl, child: TournamentQuestion.none()),
           "/VerifyCode": (context) => new Directionality(textDirection: TextDirection.rtl, child: VerifyCode('', '')),
           "/Shop": (context) => new Directionality(textDirection: TextDirection.rtl, child: new Directionality(textDirection: TextDirection.rtl, child: Shop.none())),
           "/OneVsOneMatch": (context) => new Directionality(textDirection: TextDirection.rtl, child: new Directionality(textDirection: TextDirection.rtl, child: OneVsOneMatch())),

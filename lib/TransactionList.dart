@@ -160,41 +160,51 @@ class TransactionListState extends State<TransactionList>{
                                   ),)
                                 ],)
                                 ),
-                                ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemCount: data.length,
-                                    itemBuilder: (BuildContext context,int index){
-                                      return  new Padding(padding: EdgeInsets.all(20),child: Card(
-                                        child: InkWell(
-                                            child: Container(
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Container(
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Text(
-                                                          PersianDate.fromGregorianString(Convertdate(data[index]['TCCreationDate'])).toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 18.0,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.white,
-                                                              fontFamily: 'MyFont'
+                                  ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      itemCount: data.length,
+                                      itemBuilder: (BuildContext context,int index){
+                                        return  new Padding(padding: EdgeInsets.all(20),child: Card(
+                                          child: InkWell(
+                                              child: Container(
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    Container(
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Text(
+                                                            PersianDate.fromGregorianString(Convertdate(data[index]['TCCreationDate'])).toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 18.0,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.white,
+                                                                fontFamily: 'MyFont'
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ],
+                                                        ],
+                                                      ),
+                                                      height: 50,
+                                                      color: themeColor,
                                                     ),
-                                                    height: 50,
-                                                    color: themeColor,
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      Padding(padding: EdgeInsets.only(top: 10),child:  Row(children: [
-                                                        Padding(padding: EdgeInsets.only(right: 10),
-                                                          child:
+                                                    Column(
+                                                      children: [
+                                                        Padding(padding: EdgeInsets.only(top: 10),child:  Row(children: [
+                                                          Padding(padding: EdgeInsets.only(right: 10),
+                                                            child:
+                                                            Text(
+                                                              'پکیج',
+                                                              style: TextStyle(
+                                                                  fontSize: 16.0,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.white,
+                                                                  fontFamily: 'MyFont'
+                                                              ),
+                                                            ),
+                                                          ),
                                                           Text(
-                                                            'پکیج',
+                                                            ":",
                                                             style: TextStyle(
                                                                 fontSize: 16.0,
                                                                 fontWeight: FontWeight.bold,
@@ -202,32 +212,8 @@ class TransactionListState extends State<TransactionList>{
                                                                 fontFamily: 'MyFont'
                                                             ),
                                                           ),
-                                                        ),
-                                                        Text(
-                                                          ":",
-                                                          style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.white,
-                                                              fontFamily: 'MyFont'
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          data[index]['TCPackageName'],
-                                                          style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.white,
-                                                              fontFamily: 'MyFont'
-                                                          ),
-                                                        ),
-                                                      ],
-                                                      ),),
-                                                      Padding(padding: EdgeInsets.only(top: 10),child:  Row(children: [
-                                                        Padding(padding: EdgeInsets.only(right: 10),
-                                                          child:
                                                           Text(
-                                                            'وضعیت',
+                                                            data[index]['TCPackageName'],
                                                             style: TextStyle(
                                                                 fontSize: 16.0,
                                                                 fontWeight: FontWeight.bold,
@@ -235,53 +221,67 @@ class TransactionListState extends State<TransactionList>{
                                                                 fontFamily: 'MyFont'
                                                             ),
                                                           ),
+                                                        ],
+                                                        ),),
+                                                        Padding(padding: EdgeInsets.only(top: 10),child:  Row(children: [
+                                                          Padding(padding: EdgeInsets.only(right: 10),
+                                                            child:
+                                                            Text(
+                                                              'وضعیت',
+                                                              style: TextStyle(
+                                                                  fontSize: 16.0,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.white,
+                                                                  fontFamily: 'MyFont'
+                                                              ),
+                                                            ),
 
-                                                        ),
-                                                        Text(
-                                                          ":",
-                                                          style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.white,
-                                                              fontFamily: 'MyFont'
                                                           ),
-                                                        ),
-                                                        Text(
+                                                          Text(
+                                                            ":",
+                                                            style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.white,
+                                                                fontFamily: 'MyFont'
+                                                            ),
+                                                          ),
+                                                          Text(
 
-                                                          TransactionState(data[index]['TCState']),
-                                                          style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: StateColor,
-                                                              fontFamily: 'MyFont'
+                                                            TransactionState(data[index]['TCState']),
+                                                            style: TextStyle(
+                                                                fontSize: 16.0,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: StateColor,
+                                                                fontFamily: 'MyFont'
+                                                            ),
                                                           ),
-                                                        ),
+                                                        ],
+                                                        ),),
+
                                                       ],
-                                                      ),),
-
-                                                    ],
-                                                  )
-                                                ],
+                                                    )
+                                                  ],
+                                                ),
+                                                height: 150,
+                                                color:purplecolor,
                                               ),
-                                              height: 150,
-                                              color:purplecolor,
-                                            ),
-                                            onTap: () {
-                                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: TransactionDetails(widget.UIC,data[index]['_id']))),(Route<dynamic> route) => false);
-                                            }
-                                        ),
-                                        semanticContainer: true,
-                                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20.0),
-                                        ),
-                                        margin: EdgeInsets.all(10),
-                                        elevation: 5,
-                                        color: Colors.white,
+                                              onTap: () {
+                                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: TransactionDetails(widget.UIC,data[index]['_id']))),(Route<dynamic> route) => false);
+                                              }
+                                          ),
+                                          semanticContainer: true,
+                                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20.0),
+                                          ),
+                                          margin: EdgeInsets.all(10),
+                                          elevation: 5,
+                                          color: Colors.white,
 
-                                      ),);
-                                    }
-                                ),
+                                        ),);
+                                      }
+                                  ),
                               ],
                             ),
                           )

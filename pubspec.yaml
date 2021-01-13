@@ -204,6 +204,9 @@ flutter:
       - assets/images/trprizeico.png
       - assets/images/goldentico.png
       - assets/images/blueico.png
+      - assets/images/trqspic.png
+      - assets/images/trtimerico.png
+      - assets/images/trotherhelpico.png
 
       - assets/anims/qssearch.json
 

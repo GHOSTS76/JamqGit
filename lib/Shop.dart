@@ -772,7 +772,9 @@ class ShopState extends State<Shop>{
            fontSize: 16.0
        );
      }else{
+
        var _ParsedData = await jsonDecode(response.data.toString());
+
         setState(() {
           print("GAGAGAGAGAGA");
           print(_ParsedData[0]);

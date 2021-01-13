@@ -8,6 +8,7 @@ import 'package:flutter_countdown_timer/countdown_controller.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:jamqpwa/TournamentQuestion.dart';
 import 'package:jamqpwa/TournamentSetterClass.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -968,7 +969,6 @@ class TournamentMainState extends State<TournamentMain>{
     var Ticket = '';
     var TicketNo;
     var TicketTextColor;
-    DescText = 'FakeData';
     if(Type == 'Blue'){
       Ticket = Blue;
       TicketNo = 'بلیط آبی';
@@ -1067,7 +1067,7 @@ class TournamentMainState extends State<TournamentMain>{
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed:(){
-            Navigator.pop(context);
+            WinnersList(UserInfo.GetPhoneNumber(),TournamentId);
           },
           color: Colors.cyan,
           radius: BorderRadius.circular(10),
@@ -1120,22 +1120,106 @@ class TournamentMainState extends State<TournamentMain>{
               ),
               onPressed:(){
                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:Shop(widget.UIC))),(Route<dynamic> route) => false);
-              }
-              ,
+              },
               color: Colors.green,
               radius: BorderRadius.circular(5.0),
             ),
           ],
         ).show();
-      }else if(response.data =='Joind') {
-        print('Player Join Game');
+      }else{
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: TournamentQuestion(widget.UIC,response.data[0],response.data[1]))),(Route<dynamic> route) => false);
+
       }
     } catch (e) {
       print(e);
     }
   }
 
-  WinnersList(){
+  WinnersList(UserId,TournamentID) async {
+    List Winners;
+    try {
+      FormData formData = FormData.fromMap({
+        "UserId":UserId,
+        "TournamentId":TournamentID,
+      });
+      Response response = await Dio().post("http://jamq.ir:3000/Tournament/GetWinnersList",data: formData);
+     if(response.data == 'NotIn'){
+       Alert(
+         context: context,
+         type: AlertType.info,
+         title: "خطا",
+         desc:  'فقط افراد حاظر در تورنومنت قادر به دیدن لیست برندگان هستند.',
+         buttons: [
+           DialogButton(
+             child: Text(
+               "بستن",
+               style: TextStyle(color: Colors.white, fontSize: 20),
+             ),
+             onPressed: () =>  Navigator.pop(context),
+             color: Colors.brown,
+             radius: BorderRadius.circular(5.0),
+           ),
+         ],
+       ).show();
+     }else if(response.data == 'NoWinners'){
+       Alert(
+         context: context,
+         type: AlertType.info,
+         title: "خطا",
+         desc:  'این تورنومنت فعلا برنده ای ندارد.',
+         buttons: [
+           DialogButton(
+             child: Text(
+               "بستن",
+               style: TextStyle(color: Colors.white, fontSize: 20),
+             ),
+             onPressed: () =>  Navigator.pop(context),
+             color: Colors.brown,
+             radius: BorderRadius.circular(5.0),
+           ),
+         ],
+       ).show();
+     }else{
+       Winners = response.data;
+       Alert(
+         context: context,
+         image:  SizedBox(
+           child: Text('لیست برندگان ')
+         ),
+         title:'لیست برندگان',
+         style: AlertStyle(
+         animationType: AnimationType.fromTop,
+         isCloseButton: true,
+         isOverlayTapDismiss: true,
+         descStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+         animationDuration: Duration(milliseconds: 400),
+         alertBorder: RoundedRectangleBorder(
+           borderRadius: BorderRadius.circular(0.0),
+           side: BorderSide(
+             color: Colors.grey,
+           ),
+         ),
+         titleStyle: TextStyle(
+         ),
+       ),
+         buttons: [
+           DialogButton(
+             child: Text(
+               "بستن",
+               style: TextStyle(color: Colors.white, fontSize: 20),
+             ),
+             onPressed:(){
+               Navigator.pop(context);
+             },
+             color: Colors.cyan,
+             radius: BorderRadius.circular(10),
+           ),
+         ],
+       ).show();
 
+     }
+    } catch (e) {
+      print(e);
+    }
   }
 }

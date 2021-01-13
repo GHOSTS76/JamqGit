@@ -109,6 +109,11 @@ class TestState extends State<TestClass>{
                       ],
                     ),
                     CustomRadioButton(
+                     customShape: OutlineInputBorder(
+                       borderSide: BorderSide(
+                           color: themeColor, width: 2),
+                       borderRadius: BorderRadius.all(Radius.circular(40)),
+                     ),
                   elevation: 5  ,
                   height: 50,
                   selectedBorderColor:selectedColor,
@@ -116,6 +121,7 @@ class TestState extends State<TestClass>{
                   unSelectedBorderColor: UnselectedColor,
                   enableShape: true,
                   enableButtonWrap: true,
+
                   buttonLables: [
                     "یک",
                     "دو",
