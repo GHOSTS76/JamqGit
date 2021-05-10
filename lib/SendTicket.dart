@@ -44,7 +44,8 @@ class SendTicketState extends State<SendTicket>{
     double c_height = MediaQuery.of(context).size.height*0.8;
 
     // TODO: implement build
-    return new Scaffold(body: new LayoutBuilder(
+    return new Scaffold(
+        body: new LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           if(constraints.maxWidth > 1080 || constraints.maxHeight > 1920) {
             return Container(
@@ -410,6 +411,7 @@ class SendTicketState extends State<SendTicket>{
       },
     );
   }
+
   SendTicket() async {
     if(TitleController.text == '' || TitleController.text == null || Textcontroller.text == '' || Textcontroller.text == null){
       Fluttertoast.showToast(

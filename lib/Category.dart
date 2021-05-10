@@ -137,12 +137,11 @@ class CategoryState extends State<Category>{
                                                               print('Clicked!!!');
                                                               print('Id ++ ' + Catdata[index]['_id']);
                                                               print('Number' + UserInfo.GetPhoneNumber());
-                                                              choiceCat(Catdata[index]['_id'],'M_test',UserInfo.GetPhoneNumber());
+                                                              choiceCat(Catdata[index]['_id'],widget.MatchId,UserInfo.GetPhoneNumber());
 
                                                             },
                                                           )
                                                       ),
-
                                                     ],
                                                   ),);
                                                 }
@@ -214,7 +213,8 @@ class CategoryState extends State<Category>{
                                                   return  new Padding(padding: EdgeInsets.all(10),child: Row(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: <Widget>[
-                                                      Container(
+                                                    InkWell(
+                                                      child:   Container(
                                                         height: 60,
                                                         width: 170,
                                                         decoration: BoxDecoration(
@@ -233,6 +233,10 @@ class CategoryState extends State<Category>{
                                                           ],
                                                         ),
                                                       ),
+                                                      onTap: (){
+                                                        choiceCat(Catdata[index]['_id'],widget.MatchId,UserInfo.GetPhoneNumber());
+                                                      },
+                                                    )
                                                     ],
                                                   ),);
                                                 }
@@ -264,22 +268,25 @@ class CategoryState extends State<Category>{
       return true;
     } catch (e) {
       print(e);
-    }
+    } 
   }
 
-  choiceCat(CatId,MatchId,PlayerId) async {
-    print(CatId);
+  choiceCat(CatID,MatchId,UserId) async {
+    print('Fuckoffff');
     print(MatchId);
-    print(PlayerId);
+    print(CatID);
+    print(UserId);
     FormData formData = FormData.fromMap({
-      "CatId":CatId,
       "MatchId":MatchId,
-      "MatchId":PlayerId,
+      "PlayerId":UserId,
+      "CatId":CatID,
     });
     try {
       Response response = await Dio().post("http://jamq.ir:3000/onevsonematches/SelectQuestions",data:formData);
+      print('----------');
       print(response);
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:Question.none())),(Route<dynamic> route) => false);
+      print('----------');
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:Question(response.data,widget.UIC))),(Route<dynamic> route) => false);
       return true;
     } catch (e) {
       print(e);

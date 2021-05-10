@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 
+import 'UserInfoClass.dart';
+
 class Question extends StatefulWidget{
-  var QuestionCat;
-  Question(this.QuestionCat);
+  var data,Uic;
+  Question(this.data,this.Uic);
   Question.none();
   @override
   State<StatefulWidget> createState() {
@@ -17,7 +19,7 @@ class Question extends StatefulWidget{
 }
 
 class QuestionState extends State<Question>{
-
+  UserInfoClass UserInfo ;
   ConfettiController _controllerCenter;
   Color buttonColor1 = Colors.white;
   Color buttonColor2 = Colors.white;
@@ -31,6 +33,7 @@ class QuestionState extends State<Question>{
     _controllerCenter = ConfettiController(duration: const Duration(seconds: 2));
     loadfuture = QuestionData();
     super.initState();
+    UserInfo = new UserInfoClass(widget.Uic);
   }
   @override
   Widget build(BuildContext context) {
@@ -490,7 +493,8 @@ class QuestionState extends State<Question>{
 
   QuestionData() async {
     FormData formData = FormData.fromMap({
-        "PlayerId":widget.QuestionCat,
+        "PlayerId":UserInfo.GetPhoneNumber(),
+        "MatchId":UserInfo.GetPhoneNumber(),
     });
     try {
       Response response = await Dio().post("http://jamq.ir:3000/onevsonematches/SelectQuestions",data: formData);
@@ -500,7 +504,6 @@ class QuestionState extends State<Question>{
       QSChoice2 = response.data['QSChoice2'];
       QSChoice3 = response.data['QSChoice3'];
       QSChoice4 = response.data['QSChoice4'];
-      QSTrueAnswer = response.data['QSTrueAnswer'];
       return true;
     } catch (e) {
       print(e);
@@ -508,6 +511,7 @@ class QuestionState extends State<Question>{
   }
 
   QuestionDetector(PlayerAnswer,choice){
+    //سمت سرور شود
     print('PlayerAnswer : '+PlayerAnswer);
     print('choice : '+choice.toString());
     print('choice : '+QSTrueAnswer);

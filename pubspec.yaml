@@ -206,6 +206,8 @@ flutter:
       - assets/images/blueico.png
       - assets/images/trqspic.png
       - assets/images/trtimerico.png
+      - assets/images/endtimeicon.png
+      - assets/images/ingameicon.png
       - assets/images/trotherhelpico.png
 
       - assets/anims/qssearch.json

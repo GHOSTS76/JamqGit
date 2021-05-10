@@ -629,17 +629,7 @@ class TransactionDetailsState extends State<TransactionDetails>{
 
 
   GetTicketDetails() async {
-    try {
-      FormData formData = FormData.fromMap({
-        "reqid":widget.TrId,
-      });
-      Response response = await Dio().post("http://jamq.ir:3000/Transaction/GetTransactionsByTransactionId",data: formData);
-      print(response);
-      Data = response.data;
-      return Data;
-    } catch (e) {
-      print(e);
-    }
+
   }
 
 }

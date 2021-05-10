@@ -1,14 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jamqpwa/AboutUs.dart';
 import 'package:jamqpwa/MainPage.dart';
 import 'package:jamqpwa/SendTicket.dart';
 import 'package:material_segmented_control/material_segmented_control.dart';
 
+import 'Category.dart';
 import 'OneVsOneMatchPage.dart';
+import 'UserInfoClass.dart';
 
 class OneVsOneMatch extends StatefulWidget{
+  var UIC,MatchId;
+
+  OneVsOneMatch(this.MatchId,this.UIC);
+
+  OneVsOneMatch.none();
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -17,11 +25,13 @@ class OneVsOneMatch extends StatefulWidget{
 
 }
 class OneVsOneMatchState extends State<OneVsOneMatch> with SingleTickerProviderStateMixin{
+  UserInfoClass UserInfo ;
+  var OpName,OPScore,SelfScore;
   Future loadfuture;
   var themeColor = Color.fromRGBO(19, 2, 102, 1);
   var purplecolor = Color.fromRGBO(80, 0, 131,1);
   static TabController tabController;
-  var _currentSelection;
+  var _currentSelection = 0;
   Map<int, Widget> _children = {
       0:Container(height: 20,width: 130,child: Center(child: Text('مسابقه',style: TextStyle(color: Colors.white),),),),
       1:Container(height: 20,width: 130,child:Center(child:  Text('گفتگو',style: TextStyle(color: Colors.white),),)),
@@ -35,6 +45,7 @@ class OneVsOneMatchState extends State<OneVsOneMatch> with SingleTickerProviderS
     double c_height = MediaQuery.of(context).size.height*0.4;
     double P_width = MediaQuery.of(context).size.width*0.8;
     double P_height = MediaQuery.of(context).size.height*0.8;
+    print(widget.MatchId);
      return  new FutureBuilder(
       future:loadfuture ,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -106,8 +117,7 @@ class OneVsOneMatchState extends State<OneVsOneMatch> with SingleTickerProviderS
                                                 child:  InkWell(
                                                   child:Image.asset('assets/images/backico.png',height: 25,width: 25,color: themeColor,),
                                                   onTap: (){
-                                                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: MainPage(data))),(Route<dynamic> route) => false);
-                                                  },
+                                                    RefreshData(UserInfo.GetPhoneNumber());                                                  },
                                                 ),
                                                 padding: EdgeInsets.only(left: 10),
                                               )
@@ -134,7 +144,7 @@ class OneVsOneMatchState extends State<OneVsOneMatch> with SingleTickerProviderS
 
                                                       child: Center(
                                                         child:
-                                                        Text("ورژن",style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 16),),
+                                                        Text(OpName,style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 16),),
                                                       ),
                                                       decoration: BoxDecoration(
                                                           gradient: LinearGradient(
@@ -149,7 +159,7 @@ class OneVsOneMatchState extends State<OneVsOneMatch> with SingleTickerProviderS
                                                   ),),
                                                   Container(
                                                     child: Center(
-                                                      child: Text('21',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontWeight: FontWeight.bold),),
+                                                      child: Text(OPScore.toString(),style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontWeight: FontWeight.bold),),
                                                     ),
                                                     height: 40,
                                                     width: 40,
@@ -185,7 +195,7 @@ class OneVsOneMatchState extends State<OneVsOneMatch> with SingleTickerProviderS
 
                                                       child: Center(
                                                         child:
-                                                        Text("ورژن",style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 16),),
+                                                        Text(UserInfo.GetName()+ ' '+ UserInfo.GetFamily(),style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 16),),
                                                       ),
                                                       decoration: BoxDecoration(
                                                           gradient: LinearGradient(
@@ -200,7 +210,7 @@ class OneVsOneMatchState extends State<OneVsOneMatch> with SingleTickerProviderS
                                                   ),),
                                                   Container(
                                                     child: Center(
-                                                      child: Text('21',style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontWeight: FontWeight.bold),),
+                                                      child: Text(SelfScore.toString(),style: TextStyle(color: themeColor,fontFamily: 'MyFont',fontWeight: FontWeight.bold),),
                                                     ),
                                                     height: 40,
                                                     width: 40,
@@ -253,9 +263,48 @@ class OneVsOneMatchState extends State<OneVsOneMatch> with SingleTickerProviderS
                               child: new TabBarView(
                                   controller: tabController,
                                   children: <Widget>[
-                                    new  OneVOneMatchPage.none(),
+                                    new  OneVOneMatchPage(widget.MatchId,widget.UIC),
                                     new SendTicket.none()
                                   ]),),
+                            Align(
+                              child:InkWell(
+                                child: Card(
+                                  semanticContainer: true,
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(50),bottomRight:  Radius.circular(50),bottomLeft:  Radius.circular(50),topRight:  Radius.circular(50)),
+                                  ),
+                                  margin: EdgeInsets.all(10),
+                                  elevation: 5,
+                                  child: InkWell(
+                                   child: Container(
+                                     height: 70,
+                                     width: 200,
+                                     decoration: BoxDecoration(
+                                         border: Border.all(
+                                           color:Color.fromRGBO(1, 38, 106, 1),
+                                         ),
+                                         gradient: LinearGradient(
+                                           begin: Alignment.topCenter,
+                                           end: Alignment.bottomCenter,
+                                           colors: [Color.fromRGBO(4, 185, 204, 1),Color.fromRGBO(1, 38, 106, 1),],
+                                         )
+                                     ),
+                                     child:Row(
+                                       mainAxisAlignment: MainAxisAlignment.center,
+                                       children: <Widget>[
+                                         new Text('شروع بازی',style:TextStyle(fontSize: 28,color: Colors.white,fontFamily: 'Lalezar',),),
+                                       ],
+                                     ),
+                                   ),
+                                  )
+                                ),
+                                onTap: (){
+                                  StartRound(widget.MatchId,UserInfo.GetPhoneNumber());
+                                },
+                              ),
+                              alignment: Alignment.bottomCenter,
+                            )
                           ],
                         ),
 
@@ -279,13 +328,84 @@ class OneVsOneMatchState extends State<OneVsOneMatch> with SingleTickerProviderS
     // TODO: implement initState
     super.initState();
     tabController = new TabController(length: 2, vsync: this);
-    loadfuture = Category();
+    UserInfo = new UserInfoClass(widget.UIC);
+    loadfuture = GetMatchData(widget.MatchId,UserInfo.GetPhoneNumber());
   }
-  Category() async {
+
+  MatchSetter(){
+
+  }
+
+  StartRound(MatchId,UserId) async {
+    FormData formData = FormData.fromMap({
+      "MatchId":MatchId,
+      "UserId":UserId,
+    });
     try {
-      Response response = await Dio().post("http://jamq.ir:3000/onevsonematches/SelectCategory");
-      print(response);
-      return true;
+      Response response = await Dio().post("http://jamq.ir:3000/onevsonematches/StartRound", data: formData);
+      if(response.data == 'YourTurn'){
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: Category(widget.MatchId,widget.UIC))),(Route<dynamic> route) => false);
+      }else if(response.data == 'NotYourTurn'){
+        Fluttertoast.showToast(
+            msg: "نوبت شما نیست",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+    }catch(e){
+      print(e);
+    }
+  }
+  GetMatchData(MatchId,UserId) async {
+    FormData formData = FormData.fromMap({
+      "MatchId":MatchId,
+      "UserId":UserId,
+    });
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/onevsonematches/GetMatchData",data:formData);
+
+      if(response.data['M_OP_Name']=='NoOp'){
+        OpName = 'حریف شانسی';
+      }else{
+        OpName  =response.data['M_OP_Name'];
+      }
+      OPScore = response.data['M_OPScore'];
+
+      SelfScore = response.data['M_SelfScore'];
+
+    } catch (e) {
+      print(e);
+    }
+    return true;
+  }
+
+  GetMatchRound(matchid,PlayerId) async {
+
+    FormData formData = FormData.fromMap({
+      "MatchId":matchid,
+      "PlayerID":PlayerId,
+    });
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/onevsonematches/GetRounds",data:formData);
+
+    } catch (e) {
+      print(e);
+    }
+  }
+  RefreshData(Number) async {
+    FormData formData = FormData.fromMap({
+      "usernumber":Number,
+    });
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/Mainuser/GetUserInfoByPhone",data:formData);
+      print(response.data);
+      print('ASASa');
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: MainPage(response.data))),(Route<dynamic> route) => false);
+
     } catch (e) {
       print(e);
     }

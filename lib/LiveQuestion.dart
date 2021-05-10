@@ -387,7 +387,6 @@ class LiveQuestionState extends State<LiveQuestion>{
   }
 
   rightAnswer(context)  {
-    print('Reaches HEre');
 
     Timer.periodic(Duration(seconds: 3), (timer) {
       Navigator.of(context, rootNavigator: true).pop(context);

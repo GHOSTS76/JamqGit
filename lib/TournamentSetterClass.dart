@@ -5,16 +5,16 @@ class TournamentSetter{
     for(var counter = 0 ;counter < TournamentData.length;counter++) {
       if (TournamentData[counter]['TrType'] == 'SpecialLeage') {
        // SeparateData[0] = TournamentData[counter];
-        SpeedLeage.add(TournamentData[counter]);
-      } else if (TournamentData[counter]['TrType'] == 'SpeedLeage') {
         SpecialLeage.add(TournamentData[counter]);
+      } else if (TournamentData[counter]['TrType'] == 'SpeedLeage') {
+        SpeedLeage.add(TournamentData[counter]);
       } else if (TournamentData[counter]['TrType'] == 'TodayOne') {
         TodayOne.add(TournamentData[counter]);
       } else if (TournamentData[counter]['TrType'] == 'TodayTwo') {
         TodayTwo.add(TournamentData[counter]);
-      } else if (TournamentData[counter]['TrType'] == 'TomorowOne') {
+      } else if (TournamentData[counter]['TrType'] == 'TomorrowOne') {
         TomorowOne.add(TournamentData[counter]);
-      } else if (TournamentData[counter]['TrType'] == 'TomorowTwo') {
+      } else if (TournamentData[counter]['TrType'] == 'TomorrowTwo') {
         TomorowTwo.add(TournamentData[counter]);
       }
 
@@ -33,8 +33,11 @@ class TournamentSetter{
     } else if (Type == 'Prize') {
       return SpecialLeage[0]['TrPrize'];
 
+    } else if (Type == 'TrExpireDate') {
+      return SpecialLeage[0]['TrExpireDate'];
+
     } else if (Type == 'Time') {
-      return SpecialLeage[0]['TrStartTime'].toString();
+      return SpecialLeage[0]['TrEndTime'].toString();
 
     } else if (Type == 'Icon') {
       return SpecialLeage[0]['TrIcon'];
@@ -46,7 +49,7 @@ class TournamentSetter{
   }
 
   String GetSpeedLeageData(Type) {
-    if (Type == 'id') {
+    if (Type == 'Id') {
       return SpeedLeage[0]['_id'];
     } else if (Type == 'Title') {
       return SpeedLeage[0]['TrTitle'];
@@ -59,7 +62,10 @@ class TournamentSetter{
       return SpeedLeage[0]['TrPrize'];
 
     } else if (Type == 'Time') {
-      return SpeedLeage[0]['TrStartTime'];
+      return SpeedLeage[0]['TrEndTime'];
+
+    } else if (Type == 'TrExpireDate') {
+      return SpeedLeage[0]['TrExpireDate'];
 
     } else if (Type == 'Icon') {
       return SpeedLeage[0]['TrIcon'];
@@ -72,7 +78,7 @@ class TournamentSetter{
   }
   String GetTodayOne(Type) {
 
-    if (Type == 'id') {
+    if (Type == 'Id') {
       return TodayOne[0]['_id'];
     } else if (Type == 'Title') {
       return TodayOne[0]['TrTitle'];
@@ -84,7 +90,10 @@ class TournamentSetter{
       return TodayOne[0]['TrPrize'];
 
     } else if (Type == 'Time') {
-      return TodayOne[0]['TrStartTime'];
+      return TodayOne[0]['TrEndTime'];
+
+    }  else if (Type == 'TrExpireDate') {
+      return TodayOne[0]['TrExpireDate'];
 
     } else if (Type == 'Icon') {
       return TodayOne[0]['TrIcon'];
@@ -96,7 +105,7 @@ class TournamentSetter{
     }
   }
   String GetTodayTwo(Type) {
-    if (Type == 'id') {
+    if (Type == 'Id') {
       return TodayTwo[0]['_id'];
     } else if (Type == 'Title') {
       return TodayTwo[0]['TrTitle'];
@@ -107,8 +116,11 @@ class TournamentSetter{
     } else if (Type == 'Prize') {
       return TodayTwo[0]['TrPrize'];
 
+    } else if (Type == 'TrExpireDate') {
+      return TodayTwo[0]['TrExpireDate'];
+
     } else if (Type == 'Time') {
-      return TodayTwo[0]['TrStartTime'];
+      return TodayTwo[0]['TrEndTime'];
 
     } else if (Type == 'Icon') {
       return TodayTwo[0]['TrIcon'];
@@ -121,7 +133,7 @@ class TournamentSetter{
     }
   }
   String GetTomorrowOne(Type) {
-    if (Type == 'id') {
+    if (Type == 'Id') {
       return TomorowOne[0]['_id'];
     } else if (Type == 'Title') {
       return TomorowOne[0]['TrTitle'];
@@ -131,6 +143,9 @@ class TournamentSetter{
 
     } else if (Type == 'Prize') {
       return TomorowOne[0]['TrPrize'];
+
+    } else if (Type == 'Prize') {
+      return TomorowOne[0]['TrExpireDate'];
 
     } else if (Type == 'Time') {
       return TomorowOne[0]['TrStartTime'];
@@ -146,7 +161,7 @@ class TournamentSetter{
     }
   }
   String GetTomorrowTwo(Type) {
-    if (Type == 'id') {
+    if (Type == 'Id') {
       return TomorowTwo[0]['_id'];
     } else if (Type == 'Title') {
       return TomorowTwo[0]['TrTitle'];
@@ -156,6 +171,9 @@ class TournamentSetter{
 
     } else if (Type == 'Prize') {
       return TomorowTwo[0]['TrPrize'];
+
+    }else if (Type == 'Prize') {
+      return TomorowTwo[0]['TrExpireDate'];
 
     } else if (Type == 'Time') {
       return TomorowTwo[0]['TrStartTime'];

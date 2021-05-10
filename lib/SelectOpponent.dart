@@ -10,6 +10,7 @@ import 'package:rive/rive.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 
 import 'MainPage.dart';
+import 'OneVsOneMatchMainPage.dart';
 import 'UserInfoClass.dart';
 
 class SelectOpponent extends StatefulWidget{
@@ -190,6 +191,7 @@ class SelectOpponentState extends State<SelectOpponent> with SingleTickerProvide
     );
   }
   SelectOpponent() async {
+    var MatchId;
     FormData formData = FormData.fromMap({
       "PlayerId": UserInfo.GetId(),
     });
@@ -203,16 +205,22 @@ class SelectOpponentState extends State<SelectOpponent> with SingleTickerProvide
         setState(() {
           OppenentName = array[0];
           OppenentPic =  NetworkImage(array[1]);
+          MatchId = array[2];
         });
       }else{
      setState(() {
        OppenentPic = ExactAssetImage('assets/images/question.png');
        OppenentName = 'حریف شانسی';
+       MatchId = response.data;
      });
       }
-
+      GotoMain(MatchId);
     } catch (e) {
       print(e);
     }
+  }
+
+  GotoMain(MatchID){
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child:  OneVsOneMatch(widget.UIC,MatchID))),(Route<dynamic> route) => false);
   }
 }

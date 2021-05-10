@@ -1,11 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'MainPage.dart';
+
 class OneVOneMatchPage extends StatefulWidget{
-  var matchId;
-  OneVOneMatchPage(this.matchId);
-  OneVOneMatchPage.none();
+  var matchId,Uic;
+  OneVOneMatchPage(this.matchId,this.Uic);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -26,6 +29,8 @@ class OneVOneMatchPageState extends State<OneVOneMatchPage>{
     double c_height = MediaQuery.of(context).size.height*0.4;
     double P_width = MediaQuery.of(context).size.width*0.8;
     double P_height = MediaQuery.of(context).size.height*0.8;
+    print(widget.matchId);
+    print('__________');
     // TODO: implement build
     return Scaffold(
       body:Container(
@@ -73,7 +78,8 @@ class OneVOneMatchPageState extends State<OneVOneMatchPage>{
                                   Padding(padding: EdgeInsets.only(left: 10),child:  Text('نام بازیکن',style: TextStyle(color:themeColor,fontSize: 18,fontWeight: FontWeight.bold,fontFamily: 'MyFont'),),),
 
                                 ],)
-                          )
+                          ),
+
                         ],
                       ),
                     ));
@@ -92,5 +98,15 @@ class OneVOneMatchPageState extends State<OneVOneMatchPage>{
   SetQuestiosStates(){
 
   }
-
+  RefreshData(Number) async {
+    FormData formData = FormData.fromMap({
+      "usernumber":Number,
+    });
+    try {
+      Response response = await Dio().post("http://jamq.ir:3000/Mainuser/GetUserInfoByPhone",data:formData);
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: MainPage(response.data))),(Route<dynamic> route) => false);
+    } catch (e) {
+      print(e);
+    }
+  }
 }

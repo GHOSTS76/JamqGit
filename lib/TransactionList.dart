@@ -335,7 +335,7 @@ class TransactionListState extends State<TransactionList>{
                   color: Colors.white,
                   child: Center(
                     child:
-                    Text("ورژن",style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20),),
+                    Text(UserInfo.GetName(),style: TextStyle(color: Colors.white,fontFamily: 'MyFont',fontSize: 20),),
                   ),
                 ),
               ),),
