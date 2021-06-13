@@ -1,6 +1,4 @@
 import 'dart:core';
-import 'dart:core';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +64,7 @@ class TournamentMainState extends State<TournamentMain>{
     print(AddedDate3);
     int endTime1 = DateTime.parse(AddedDate1+' '+Timer1.toString()).millisecondsSinceEpoch  ;
     int endTime2 = DateTime.parse(AddedDate2+' '+Timer2.toString()).millisecondsSinceEpoch   ;
-    int endTime3 = DateTime.parse(AddedDate3+' '+Timer3.toString()).millisecondsSinceEpoch   ; 
+    int endTime3 = DateTime.parse(AddedDate3+' '+Timer3.toString()).millisecondsSinceEpoch   ;
     print(endTime1);
     print(endTime2);
     print(endTime3);
@@ -88,11 +86,10 @@ class TournamentMainState extends State<TournamentMain>{
     var Green = Color.fromRGBO(3, 170, 2,1);
     return FutureBuilder(
         future:loadfuture,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        builder: (BuildContext context, AsyncSnapshot snapshot){
           var appscaffold;
           if(snapshot.data == true){
-            appscaffold =
-            new  Scaffold(
+            appscaffold = new  Scaffold(
               body:  LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     if(constraints.maxWidth > 1080 || constraints.maxHeight > 1920) {
@@ -310,7 +307,7 @@ class TournamentMainState extends State<TournamentMain>{
                                                   onTap: (){
                                                     print('FALALALAL0');
                                                     print(TournamentData.GetSpecialLeageData('Id'));
-                                                    StartMatch(P_width,Green,TournamentData.GetSpecialLeageData('Title'),TournamentData.GetSpecialLeageData('Icon'),TournamentData.GetSpecialLeageData('TrText'),TournamentData.GetSpecialLeageData('Prize'),'Gold',TournamentData.GetSpecialLeageData('Id'));
+                                                    StartMatch(P_width,Green,TournamentData.GetSpecialLeageData('Title'),TournamentData.GetSpecialLeageData('Icon'),TournamentData.GetSpecialLeageData('TrText'),TournamentData.GetSpecialLeageData('Prize'),'Gold',TournamentData.GetSpecialLeageData('Id'),TournamentData.GetSpecialLeageData('SingleState'));
                                                   },
                                                 )
                                             ),
@@ -538,10 +535,8 @@ class TournamentMainState extends State<TournamentMain>{
                                                           ],
                                                         ),
                                                         onTap: (){
-                                                          print('___________');
-                                                          print(TournamentData.GetSpeedLeageData('Id'));
-                                                          print('___________');
-                                                          StartMatch(P_width,Green,TournamentData.GetSpeedLeageData('Title'),TournamentData.GetSpeedLeageData('Icon'),TournamentData.GetSpeedLeageData('TrText'),TournamentData.GetSpeedLeageData('Prize'),'Gold',TournamentData.GetSpeedLeageData('Id'));
+                                                          print('ThisClicked');
+                                                          StartMatch(P_width,Green,TournamentData.GetSpeedLeageData('Title'),TournamentData.GetSpeedLeageData('Icon'),TournamentData.GetSpeedLeageData('TrText'),TournamentData.GetSpeedLeageData('Prize'),'Gold',TournamentData.GetSpeedLeageData('Id'),TournamentData.GetSpeedLeageData('SingleState'));
                                                         },
                                                       )
                                                   ),
@@ -771,7 +766,7 @@ class TournamentMainState extends State<TournamentMain>{
                                                               ),
                                                             ),
                                                             onTap: (){
-                                                              StartMatch(P_width,Green,TournamentData.GetTodayOne('Title'),TournamentData.GetTodayOne('Icon'),TournamentData.GetTodayOne('TrText'),TournamentData.GetTodayOne('Prize'),'Blue',TournamentData.GetTodayOne('Id'));
+                                                              StartMatch(P_width,Green,TournamentData.GetTodayOne('Title'),TournamentData.GetTodayOne('Icon'),TournamentData.GetTodayOne('TrText'),TournamentData.GetTodayOne('Prize'),'Blue',TournamentData.GetTodayOne('Id'),TournamentData.GetTodayOne('SingleState'));
 
                                                             },
                                                           ),
@@ -840,7 +835,7 @@ class TournamentMainState extends State<TournamentMain>{
                                                               ),
                                                             ),
                                                             onTap: (){
-                                                              StartMatch(P_width,Green,TournamentData.GetTodayTwo('Title'),TournamentData.GetTodayTwo('Icon'),TournamentData.GetTodayTwo('TrText'),TournamentData.GetTodayTwo('Prize'),'Blue',TournamentData.GetTodayTwo('Id'));
+                                                              StartMatch(P_width,Green,TournamentData.GetTodayTwo('Title'),TournamentData.GetTodayTwo('Icon'),TournamentData.GetTodayTwo('TrText'),TournamentData.GetTodayTwo('Prize'),'Blue',TournamentData.GetTodayTwo('Id'),TournamentData.GetTodayTwo('SingleState'));
                                                             },
                                                           )
 
@@ -1240,7 +1235,7 @@ class TournamentMainState extends State<TournamentMain>{
                                                   onTap: (){
                                                     print('FALALALAL0');
                                                     print(TournamentData.GetSpecialLeageData('Id'));
-                                                    StartMatch(P_width,Green,TournamentData.GetSpecialLeageData('Title'),TournamentData.GetSpecialLeageData('Icon'),TournamentData.GetSpecialLeageData('TrText'),TournamentData.GetSpecialLeageData('Prize'),'Gold',TournamentData.GetSpecialLeageData('Id'));
+                                                    StartMatch(P_width,Green,TournamentData.GetSpecialLeageData('Title'),TournamentData.GetSpecialLeageData('Icon'),TournamentData.GetSpecialLeageData('TrText'),TournamentData.GetSpecialLeageData('Prize'),'Gold',TournamentData.GetSpecialLeageData('Id'),TournamentData.GetSpecialLeageData('SingleState'));
                                                   },
                                                 )
                                             ),
@@ -1467,8 +1462,12 @@ class TournamentMainState extends State<TournamentMain>{
                                                           ],
                                                         ),
                                                         onTap: (){
+                                                          print('ThisClicked2');
+                                                          print('ThisClicked2');
+                                                          print('ThisClicked2');
+                                                          print(TournamentData.GetSpeedLeageData('SingleState'));
 
-                                                          StartMatch(P_width,Green,TournamentData.GetSpeedLeageData('Title'),TournamentData.GetSpeedLeageData('Icon'),TournamentData.GetSpeedLeageData('TrText'),TournamentData.GetSpeedLeageData('Prize'),'Gold',TournamentData.GetSpeedLeageData('Id'));
+                                                          StartMatch(P_width,Green,TournamentData.GetSpeedLeageData('Title'),TournamentData.GetSpeedLeageData('Icon'),TournamentData.GetSpeedLeageData('TrText'),TournamentData.GetSpeedLeageData('Prize'),'Gold',TournamentData.GetSpeedLeageData('Id'),TournamentData.GetSpeedLeageData('SingleState'));
                                                         },
                                                       )
                                                   ),
@@ -1699,7 +1698,7 @@ class TournamentMainState extends State<TournamentMain>{
                                                                 ),
                                                               ),
                                                               onTap: (){
-                                                                StartMatch(P_width,Green,TournamentData.GetTodayOne('Title'),TournamentData.GetTodayOne('Icon'),TournamentData.GetTodayOne('TrText'),TournamentData.GetTodayOne('Prize'),'Blue',TournamentData.GetTodayOne('Id'));
+                                                                StartMatch(P_width,Green,TournamentData.GetTodayOne('Title'),TournamentData.GetTodayOne('Icon'),TournamentData.GetTodayOne('TrText'),TournamentData.GetTodayOne('Prize'),'Blue',TournamentData.GetTodayOne('Id'),TournamentData.GetTodayOne('SingleState'));
 
                                                               },
                                                             ),
@@ -1768,7 +1767,7 @@ class TournamentMainState extends State<TournamentMain>{
                                                                 ),
                                                               ),
                                                               onTap: (){
-                                                                StartMatch(P_width,Green,TournamentData.GetTodayTwo('Title'),TournamentData.GetTodayTwo('Icon'),TournamentData.GetTodayTwo('TrText'),TournamentData.GetTodayTwo('Prize'),'Blue',TournamentData.GetTodayTwo('Id'));
+                                                                StartMatch(P_width,Green,TournamentData.GetTodayTwo('Title'),TournamentData.GetTodayTwo('Icon'),TournamentData.GetTodayTwo('TrText'),TournamentData.GetTodayTwo('Prize'),'Blue',TournamentData.GetTodayTwo('Id'),TournamentData.GetTodayTwo('SingleState'));
                                                               },
                                                             )
                                                           ],
@@ -2018,7 +2017,7 @@ class TournamentMainState extends State<TournamentMain>{
           new  Scaffold(body: appscaffold)  :  new Center(child: CircularProgressIndicator(),);
         });
   }
-  GetTournaments() async {
+    GetTournaments() async {
     try {
       Response response = await Dio().post("http://jamq.ir:3000/Tournament/GetActiveTournaments");
       print(response.data);
@@ -2032,21 +2031,24 @@ class TournamentMainState extends State<TournamentMain>{
       print(e);
     }
   }
-  SetTimer(){
-
-  }
   SetTodayPrize(Prize1,Prize2){
     var result;
     result =  Prize1 + Prize2;
     return result;
   }
-
-  StartMatch(width,Green,Title,Icon,DescText,Prize,Type,TournamentId){
+  StartMatch(width,Green,Title,Icon,DescText,Prize,Type,TournamentId,SingleIlimnation){
+    Row TicketRow;
     var Gold='assets/images/goldentico.png';
     var Blue = 'assets/images/blueico.png';
     var Ticket = '';
     var TicketNo;
     var TicketTextColor;
+    print('________________');
+    print(SingleIlimnation);
+    print('________________');
+    print(TournamentId);
+    print('________________');
+    print(Type);
     if(Type == 'Blue'){
       Ticket = Blue;
       TicketNo = 'بلیط آبی';
@@ -2055,6 +2057,36 @@ class TournamentMainState extends State<TournamentMain>{
       Ticket = Gold;
       TicketNo = 'بلیط طلایی';
       TicketTextColor = Colors.black;
+    }
+    if(SingleIlimnation =='True'){
+
+      TicketRow= Row(
+       mainAxisAlignment: MainAxisAlignment.center,
+       children: [
+         Text('ورودی',style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
+         Stack(
+           children: [
+
+             Image.asset(Ticket,width: 50,height:50,),
+             Padding(
+               child: Text('1',style: TextStyle(color:TicketTextColor,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
+               padding: EdgeInsets.only(left: 22,top: 12),
+             )
+           ],
+         ),
+         Text(TicketNo,style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
+       ],
+     );
+
+    }else{
+
+      TicketRow = Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('',style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
+        ],
+      );
+
     }
     Alert(
       context: context,
@@ -2119,23 +2151,10 @@ class TournamentMainState extends State<TournamentMain>{
               ),
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: 10),child:Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('ورودی',style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
-              Stack(
-                children: [
+          Padding(padding: EdgeInsets.only(top: 10),child:TicketRow
 
-                  Image.asset(Ticket,width: 50,height:50,),
-                  Padding(
-                    child: Text('1',style: TextStyle(color:TicketTextColor,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
-                    padding: EdgeInsets.only(left: 22,top: 12),
-                  )
-                ],
-              ),
-              Text(TicketNo,style: TextStyle(color: Colors.black,fontFamily: 'MyFont',fontSize: 16,fontWeight: FontWeight.bold),),
-            ],
-          ),)
+            ,)
+
         ],
       ),
       buttons: [
@@ -2225,7 +2244,27 @@ class TournamentMainState extends State<TournamentMain>{
             ),
           ],
         ).show();
-      }else{
+      }else if(response.data == 'AlreadyPlayed'){
+        Alert(
+          context: context,
+          type: AlertType.info,
+          title: "خطا",
+          desc:  'شما در این تورنومنت شرکت کرده اید لطفا تا شروع تورنومنت بعدی صبر کنید',
+          buttons: [
+            DialogButton(
+              child: Text(
+                "بستن",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () =>  Navigator.pop(context),
+              color: Colors.brown,
+              radius: BorderRadius.circular(5.0),
+            ),
+          ],
+        ).show();
+      }
+
+      else{
         print('__________________');
         print(response.data);
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: TournamentQuestion(widget.UIC,response.data))),(Route<dynamic> route) => false);

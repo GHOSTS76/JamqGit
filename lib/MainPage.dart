@@ -55,6 +55,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) {
+
     ConnectSocket();
     double width = MediaQuery.of(context).size.width;
     double c_width = MediaQuery.of(context).size.width*0.4;
@@ -876,14 +877,16 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
       socket.on('connect', (_) {
         print(socket.id);
         Live();
+        ConnectToApp(UserInfo.GetPhoneNumber());
         runsocket = 1;
         print(runsocket.toString());
       });
     }
   }
-  SendLiveRequest(PId){
 
-    socket.emit('JoinGame', [PId]);
+  ConnectToApp(PId){
+
+    socket.emit('ConnectToApp ', [PId]);
 
   }
   Live(){
@@ -925,7 +928,7 @@ class MainPageState extends State<MainPage> with SingleTickerProviderStateMixin 
           fontSize: 16.0
       );
     }else{
-      socket.emit('SubmitId',UserInfo.GetPhoneNumber());
+        socket.emit('SubmitId',UserInfo.GetPhoneNumber());
       socket.disconnect();
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>new Directionality(textDirection: TextDirection.rtl, child: LiveMain(data,UserInfo.GetPhoneNumber(),widget.UIC))),(Route<dynamic> route) => false);
     }

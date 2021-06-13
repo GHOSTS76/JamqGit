@@ -1,6 +1,7 @@
 class TournamentSetter{
   var TournamentData;
   var SpecialLeage= [],SpeedLeage= [],TodayOne= [],TodayTwo= [],TomorowOne= [],TomorowTwo= [];
+
   TournamentSetter(this.TournamentData){
     for(var counter = 0 ;counter < TournamentData.length;counter++) {
       if (TournamentData[counter]['TrType'] == 'SpecialLeage') {
@@ -17,7 +18,6 @@ class TournamentSetter{
       } else if (TournamentData[counter]['TrType'] == 'TomorrowTwo') {
         TomorowTwo.add(TournamentData[counter]);
       }
-
     }
 
   }
@@ -40,11 +40,31 @@ class TournamentSetter{
       return SpecialLeage[0]['TrEndTime'].toString();
 
     } else if (Type == 'Icon') {
+
       return SpecialLeage[0]['TrIcon'];
+
     }else if(Type == 'Category'){
+
       return SpecialLeage[0]['TrCategoryName'];
+
     }else if(Type == 'Text'){
+
       return SpecialLeage[0]['TrText'];
+    }else if(Type == 'RemainTime'){
+
+      return SpecialLeage[0]['RemainTime'];
+    }
+    else if(Type == 'SingleState'){
+      print('Heeeereee');
+      print(SpecialLeage[0]['TrSingleelimination']);
+
+      if(SpecialLeage[0]['TrSingleelimination']){
+
+        return  'True';
+      }else{
+        return 'False';
+      }
+
     }
   }
 
@@ -75,6 +95,22 @@ class TournamentSetter{
     }else if(Type == 'Text'){
       return SpeedLeage[0]['TrText'];
     }
+    else if(Type == 'RemainTime'){
+
+      return SpeedLeage[0]['RemainTime'];
+    }
+    else if(Type == 'SingleState'){
+      print('H1s1');
+      print(SpeedLeage[0]['TrSingleelimination']);
+
+      if(SpeedLeage[0]['TrSingleelimination']){
+
+        return  'True';
+      }else{
+        return 'False';
+      }
+
+    }
   }
   String GetTodayOne(Type) {
 
@@ -102,6 +138,22 @@ class TournamentSetter{
       return TodayOne[0]['TrCategoryName'];
     }else if(Type == 'Text'){
       return TodayOne[0]['TrText'];
+    }
+    else if(Type == 'RemainTime'){
+
+      return TodayOne[0]['RemainTime'];
+    }
+    else if(Type == 'SingleState'){
+      print('Heeeereee');
+      print(TodayOne[0]['TrSingleelimination']);
+
+      if(TodayOne[0]['TrSingleelimination']){
+
+        return  'True';
+      }else{
+        return 'False';
+      }
+
     }
   }
   String GetTodayTwo(Type) {
@@ -131,6 +183,22 @@ class TournamentSetter{
     }else if(Type == 'Text'){
       return TodayTwo[0]['TrText'];
     }
+    else if(Type == 'RemainTime'){
+
+      return TodayTwo[0]['RemainTime'];
+    }
+    else if(Type == 'SingleState'){
+      print('Heeeereee');
+      print(TodayTwo[0]['TrSingleelimination']);
+
+      if(TodayTwo[0]['TrSingleelimination']){
+
+        return  'True';
+      }else{
+        return 'False';
+      }
+
+    }
   }
   String GetTomorrowOne(Type) {
     if (Type == 'Id') {
@@ -159,6 +227,22 @@ class TournamentSetter{
     }else if(Type == 'Text'){
       return TomorowOne[0]['TrText'];
     }
+    else if(Type == 'RemainTime'){
+
+      return TomorowOne[0]['RemainTime'];
+    }
+    else if(Type == 'SingleState'){
+      print('Heeeereee');
+      print(TomorowOne[0]['TrSingleelimination']);
+
+      if(TomorowOne[0]['TrSingleelimination']){
+
+        return  'True';
+      }else{
+        return 'False';
+      }
+
+    }
   }
   String GetTomorrowTwo(Type) {
     if (Type == 'Id') {
@@ -185,6 +269,22 @@ class TournamentSetter{
       return TomorowTwo[0]['TrCategoryName'];
     }else if(Type == 'Text'){
       return TomorowTwo[0]['TrText'];
+    }
+    else if(Type == 'RemainTime'){
+
+      return TomorowTwo[0]['RemainTime'];
+    }
+    else if(Type == 'SingleState'){
+      print('Heeeereee');
+      print(TomorowTwo[0]['TrSingleelimination']);
+
+      if(TomorowTwo[0]['TrSingleelimination']){
+
+        return  'True';
+      }else{
+        return 'False';
+      }
+
     }
   }
 }

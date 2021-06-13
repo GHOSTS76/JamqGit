@@ -179,6 +179,7 @@ class TournamentQuestionState extends State<TournamentQuestion>{
                                               ),
                                               onPressed:(){
                                                 print('Continue');
+                                                ContinuePlaying();
                                               },
                                               color: selectedColor,
                                               radius: BorderRadius.circular(5.0),
@@ -487,6 +488,7 @@ class TournamentQuestionState extends State<TournamentQuestion>{
                                               ),
                                               onPressed:(){
                                                 print('Continue');
+                                                ContinuePlaying();
                                               },
                                               color: selectedColor,
                                               radius: BorderRadius.circular(5.0),
@@ -753,6 +755,8 @@ class TournamentQuestionState extends State<TournamentQuestion>{
   }
 
   AnalayzeQuestion(QsId,UserChoice,PlayerId,TrID) async {
+    print('شششششششش');
+    print(UserChoice);
     _controller.pause();
     try {
       FormData formData = FormData.fromMap({
@@ -762,7 +766,7 @@ class TournamentQuestionState extends State<TournamentQuestion>{
         "TrID":TrID,
       });
       Response response = await Dio().post("http://jamq.ir:3000/Tournament/QuestionAnalyzer",data: formData);
-      print('BALALOCALA');
+
       print(response.data);
       Navigator.pop(context);
       var QsRes= jsonDecode(response.data);
@@ -800,6 +804,7 @@ class TournamentQuestionState extends State<TournamentQuestion>{
       print(e);
     }
   }
+
   NexTQuestion(){
 
     setState(() {
@@ -886,7 +891,7 @@ class TournamentQuestionState extends State<TournamentQuestion>{
         },
         type: AlertType.error,
         title: "برنده شدی",
-        desc:  "تبریک ،!!! برنده شدی ",
+        desc:  "تبریک میگم برنده شدی.",
         buttons: [
           DialogButton(
             child: Text(
@@ -938,6 +943,7 @@ class TournamentQuestionState extends State<TournamentQuestion>{
     }
 
   }
+
   GetTournaments(dt) async {
     try {
       Response response = await Dio().post("http://jamq.ir:3000/Tournament/GetActiveTournaments");
